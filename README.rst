@@ -67,4 +67,4 @@ package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_
 .. _post: https://groups.google.com/g/cadquery/c/5kVRpECcxAU/m/7no7_ja6AAAJ
 .. _CadQuery: https://github.com/cadquery/cadquery
 .. _forum: https://groups.google.com/g/cadquery
-.. _`Helical Line`: ../../../examples/helical_line.py
+.. _`Helical Line`: examples/helical_line.py
