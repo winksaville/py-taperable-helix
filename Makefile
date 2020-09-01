@@ -1,4 +1,4 @@
-.PHONY: clean clean-test clean-pyc clean-build docs help format test
+.PHONY: clean clean-test clean-pyc clean-build help format test dev
 .DEFAULT_GOAL := help
 
 define BROWSER_PYSCRIPT
@@ -22,6 +22,8 @@ endef
 export PRINT_HELP_PYSCRIPT
 
 BROWSER := python -c "$$BROWSER_PYSCRIPT"
+
+format_srcs=setup.py converging_helix/ tests/ examples/
 
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
@@ -47,9 +49,6 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
 
-lint: ## check style with flake8
-	flake8 converging_helix tests
-
 t: test ## test
 
 test: ## run tests quickly with the default Python
@@ -59,27 +58,16 @@ test-all: ## run tests on every Python version with tox
 	tox
 
 f: format ## format
-format: ## format/lint py files with isort, black and flake8
-	isort *.py
-	black *.py
-	flake8 *.py
+format: ## format, lint py files with isort, black and flake8
+	isort ${format_srcs}
+	black ${format_srcs}
+	flake8 ${format_srcs}
 
 coverage: ## check code coverage quickly with the default Python
 	coverage run --source converging_helix -m pytest
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html
-
-docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/converging_helix.rst
-	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ converging_helix
-	$(MAKE) -C docs clean
-	$(MAKE) -C docs html
-	$(BROWSER) docs/_build/html/index.html
-
-servedocs: docs ## compile the docs watching for changes
-	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
 release: dist ## package and upload a release
 	twine upload dist/*
@@ -91,3 +79,6 @@ dist: clean ## builds source and wheel package
 
 install: clean ## install the package to the active Python's site-packages
 	python setup.py install
+
+dev: clean ## install the package for developemeent
+	pip install -e .

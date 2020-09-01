@@ -57,7 +57,9 @@ def converging_helix(
             if (cvrg_factor > first_t) and (t <= cvrg_factor):
                 # FadeIn, fade_angle is 0 to 90deg so fade_scale is between 0 and 1
                 fade_angle = +(pi / 2 * t / cvrg_factor)
-            elif (cvrg_factor == 0) or ((t > cvrg_factor) and (t < last_t - cvrg_factor)):
+            elif (cvrg_factor == 0) or (
+                (t > cvrg_factor) and (t < last_t - cvrg_factor)
+            ):
                 # No fading set fade_angle to 90deg so sin(fade_angle) == 1
                 fade_angle = pi / 2
             else:
