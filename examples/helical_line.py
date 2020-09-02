@@ -2,20 +2,21 @@
 import argparse
 
 import plotly.express as px
+import plotly.graph_objs as go
 from numpy import arange
 
 from converging_helix import converging_helix as chelix
 
-# Create a function which generates a 3d tuple(x,y,z)
-# when invoked with a parameter between 0 .. 1 inclusive.
+# Create a function which returns tuple(x,y,z) when
+# invoked with a parameter between 0 .. 1 inclusive.
 # The returned tuple will be a point on the helix.
-hf = chelix(radius=5, pitch=2, height=2)
-
-# Create a list of tuples for each point on the helix
-data = list(map(hf, arange(0.0, 1.0 + 0.01, 0.01)))
-
+inc = 0.01
+f = chelix(radius=5, pitch=2, height=6)
+l = list(map(f, arange(0, 1 + inc, inc)))
 fig = px.line_3d(
-    x=[x for x, _, _ in data], y=[y for _, y, _ in data], z=[z for _, _, z in data],
+    x=[x for x, _, _ in l],
+    y=[y for _, y, _ in l],
+    z=[z for _, _, z in l],
 )
 
 if __name__ == "__main__":

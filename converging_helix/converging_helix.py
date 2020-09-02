@@ -16,9 +16,9 @@ def converging_helix(
 ) -> Callable[[float], Tuple[float, float, float]]:
     """
     Returns a function which can be used to create helixes that are
-    as simple as a single line to as complex as multifacited 3d solids
-    that start at a point then smoothly expand to the solid and then
-    smoothly converge back to a point.
+    as simple as a single line or be multiple helixes that start at
+    a point then smoothly expand to the solid and then smoothly
+    converge back to a point.
 
     The initial use case is to create triangular or trapazoidal threads
     for nuts and bolts. Invoking converging_helix multiple times with the
@@ -27,57 +27,76 @@ def converging_helix(
     at a point expand to the desired shape and then converge back to a
     point.
 
-    Right now all "illegal parameters" will return Tuple[0, 0, 0]
-
-    TODO: Should we throw an error on "illegal parameters" to converging_helix
-          such as, helix_height != 0, pitch != 0, first_t >= cvrg_factor, cvrtFactor <= last_t
-
-    TODO: Should "func" throw an error on "illegal parameters" such as t out of range
+    :param radius: of the basic helix.
+    :param pitch: of pitch of the helix per revolution.
+    :param height: of the cyclinder containing the helix.
+    :param inset: the top and bottom of the helicial
+    cyclinder where the helix actually starts.
+    :param cvrg_factor: if cvrg_factor is 0 no fading occurs
+    ortherise cvrg_factor is the percentage of the range of t that fades occur
+    at the begining and end of that range.
     """
+    # Reduce the height by 2 * inset. Threads start at inset
+    # and end at height - inset.
+    if inset < 0:
+        raise ValueError("inset must be >= 0")
+
+    helix_height: float = (abs(height) - (2 * inset))
+    if helix_height <= 0:
+        raise ValueError(f"(abs(height)={abs(height)}) < ((2 * inset)={2 * inset}), it must be >=")
+    helix_height *= -1 if height < 1 else 1
+    turns: float = pitch / helix_height
+
+    if cvrg_factor > 0.5:
+        raise ValueError("cvrg_factor={cvrg_factor} > 0.5, should 0 .. 0.5 inclusive")
+
+    t_range: float = last_t - first_t
+    if (t_range <= 0):
+        raise ValueError("last_t={last_t} <= first_t={first_t}")
+
+
+    fade_range: float = 0
+    if cvrg_factor > 0:
+        fade_range = (last_t - first_t) * cvrg_factor
+
+    fade_in_mark: float = first_t + fade_range
+    fade_out_mark: float = last_t - fade_range
 
     def func(t: float) -> Tuple[float, float, float]:
+        """
+        Return a tuple(x, y, z)
+        :param t: A value between first_t .. last_t inclusive
+        """
 
         x: float = 0
         y: float = 0
         z: float = 0
 
-        # Reduce the height by 2 * inset. Threads start at inset
-        # and end at height - inset.
-        helix_height: float = height - (2 * inset)
-        if (
-            helix_height != 0
-            and pitch != 0
-            and t >= first_t
-            and t <= last_t
-            and first_t <= cvrg_factor
-            and cvrg_factor <= last_t
+        fade_angle: float
+        to: float = t - first_t
+
+        if (fade_range > 0) and (t < fade_in_mark):
+            # FadeIn, fade_angle is 0 to 90deg so fade_scale is between 0 and 1
+            fade_angle = +(pi / 2 * (t - first_t) / fade_range)
+        elif (fade_range == 0) or (
+            (t >= fade_in_mark) and (t < fade_out_mark)
         ):
-            fade_angle: float
-
-            if (cvrg_factor > first_t) and (t <= cvrg_factor):
-                # FadeIn, fade_angle is 0 to 90deg so fade_scale is between 0 and 1
-                fade_angle = +(pi / 2 * t / cvrg_factor)
-            elif (cvrg_factor == 0) or (
-                (t > cvrg_factor) and (t < last_t - cvrg_factor)
-            ):
-                # No fading set fade_angle to 90deg so sin(fade_angle) == 1
-                fade_angle = pi / 2
-            else:
-                # FadeOut, fade_angle is 90 to 0deg so fade_scale is between 1 and 0
-                fade_angle = -((2 * pi) - (pi / 2 * (last_t - t) / cvrg_factor))
-            fade_scale: float = sin(fade_angle)
-
-            r: float = radius + (horz_offset * fade_scale)
-            a: float = 2 * pi / (pitch / helix_height) * t
-            x = r * sin(-a)
-            y = r * cos(a)
-            z = (helix_height * t) + (vert_offset * fade_scale) + inset
-
-            # print(f"converging_helix.f: {t:.4f}: ({x:.4f}, {y:.4f}, {z:.4f})")
+            # No fading set fade_angle to 90deg so sin(fade_angle) == 1
+            fade_angle = pi / 2
         else:
-            # print(f"converging_helix.f: {t:.4f}: (0, 0, 0)")
-            pass
+            # FadeOut, fade_angle is 90 to 0deg so fade_scale is between 1 and 0
+            fade_angle = -((2 * pi) - (pi / 2 * (last_t - t) / fade_range))
+        fade_scale: float = sin(fade_angle)
 
-        return (x, y, z)
+        r: float = radius + (horz_offset * fade_scale)
+        a: float = (2 * pi / turns) * (to / t_range)
+
+        x = r * sin(-a)
+        y = r * cos(a)
+        z = (helix_height * t) + (vert_offset * fade_scale) + inset
+
+
+        result = (x, y, z)
+        return result
 
     return func
