@@ -7,14 +7,14 @@ from numpy import arange
 
 from converging_helix import converging_helix as chelix
 
-radius=1
-pitch=1
-height=1
-inset=0.0
-cvrg_factor=0.5
-first_t=0
-last_t=1
-inc=0.01
+radius = 1
+pitch = 1
+height = 1
+inset = 0.0
+cvrg_factor = 0.5
+first_t = 0
+last_t = 1
+inc = 0.01
 
 # Create three helixes showing the fading
 fL = chelix(
@@ -54,11 +54,17 @@ fU = chelix(
 )
 
 # Create a list of tuples for each point on the helix
-data_fL = list(map(fL, arange(first_t, last_t + inc, inc))) # + 10, 10))) # + 0.01, 0.01)))
+data_fL = list(
+    map(fL, arange(first_t, last_t + inc, inc))
+)  # + 10, 10))) # + 0.01, 0.01)))
 data_fL.append(fL(last_t))
-data_fM = list(map(fM, arange(first_t, last_t + inc, inc))) # + 10, 10))) # + 0.01, 0.01)))
+data_fM = list(
+    map(fM, arange(first_t, last_t + inc, inc))
+)  # + 10, 10))) # + 0.01, 0.01)))
 data_fM.append(fM(last_t))
-data_fU = list(map(fU, arange(first_t, last_t + inc, inc))) # + 10, 10))) # + 0.01, 0.01)))
+data_fU = list(
+    map(fU, arange(first_t, last_t + inc, inc))
+)  # + 10, 10))) # + 0.01, 0.01)))
 data_fU.append(fU(last_t))
 
 fig = go.Figure()
@@ -68,7 +74,7 @@ fig.add_trace(
         x=[x for x, _, _ in data_fL],
         y=[y for _, y, _ in data_fL],
         z=[z for _, _, z in data_fL],
-        mode='lines',
+        mode="lines",
     )
 )
 fig.add_trace(
@@ -77,7 +83,7 @@ fig.add_trace(
         x=[x for x, _, _ in data_fM],
         y=[y for _, y, _ in data_fM],
         z=[z for _, _, z in data_fM],
-        mode='lines',
+        mode="lines",
     )
 )
 fig.add_trace(
@@ -86,7 +92,7 @@ fig.add_trace(
         x=[x for x, _, _ in data_fU],
         y=[y for _, y, _ in data_fU],
         z=[z for _, _, z in data_fU],
-        mode='lines',
+        mode="lines",
     )
 )
 
@@ -128,4 +134,3 @@ if __name__ == "__main__":
             print(f"wrote: {fname}")
         except Exception:
             print("Unable to write files; run from project root")
-

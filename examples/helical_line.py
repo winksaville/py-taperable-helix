@@ -12,11 +12,11 @@ from converging_helix import converging_helix as chelix
 # The returned tuple will be a point on the helix.
 inc = 0.01
 f = chelix(radius=5, pitch=2, height=6)
-l = list(map(f, arange(0, 1 + inc, inc)))
+points = list(map(f, arange(0, 1 + inc, inc)))
 fig = px.line_3d(
-    x=[x for x, _, _ in l],
-    y=[y for _, y, _ in l],
-    z=[z for _, _, z in l],
+    x=[x for x, _, _ in points],
+    y=[y for _, y, _ in points],
+    z=[z for _, _, z in points],
 )
 
 if __name__ == "__main__":
