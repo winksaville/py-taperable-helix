@@ -41,7 +41,7 @@ def converging_helix(
     :param height: of the cyclinder containing the helix.
     :param cvrg_factor: if cvrg_factor is 0 no fading occurs
     ortherise cvrg_factor is the percentage of the range of t that fades occur
-    at the begining and end of that range.
+    at the begining and end of that range. Must be 0 to 0.5.
     :param inset_offset: the top and bottom of the helicial
     cyclinder where the helix actually starts.
     :param horz_offset: is added to the radius of the helix
@@ -50,28 +50,21 @@ def converging_helix(
     :param last_t: is the last t value passed to the returned function
 
     """
-    # TODO: Test negative inset_offset works
-    # if inset_offset < 0:
-    #     raise ValueError("inset_offset must be >= 0")
+    # TODO: Should we clamp to the proper range?
+    if cvrg_factor < 0 or cvrg_factor > 0.5:
+        raise ValueError("cvrg_factor={cvrg_factor} should be 0 .. 0.5 inclusive")
 
     # Reduce the height by 2 * inset_offset. Threads start at inset_offset
     # and end at height - inset_offset
     helix_height: float = (height - (2 * inset_offset))
 
     # The number or revolutions of the helix within the helix_height
+    # set to 1 if pitch or helix_height is 0
     turns: float = pitch / helix_height if pitch != 0 and helix_height != 0 else 1
 
     t_range: float = last_t - first_t
 
-    # TODO: Test what happens with cvrg_factor > 0.5
-    if cvrg_factor > 0.5:
-        raise ValueError("cvrg_factor={cvrg_factor} > 0.5, should 0 .. 0.5 inclusive")
-
-    # TODO: Test what happens with cvrg_factor < 0
     fade_range: float = t_range * cvrg_factor
-    # fade_range: float = 0
-    # if cvrg_factor > 0:
-    #     fade_range = (last_t - first_t) * cvrg_factor
 
     fade_in_mark: float = first_t + fade_range
     fade_out_mark: float = last_t - fade_range
