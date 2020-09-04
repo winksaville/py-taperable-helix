@@ -14,10 +14,12 @@ inc = 0.01
 f = chelix(radius=5, pitch=2, height=6)
 points = list(map(f, arange(0, 1 + inc, inc)))
 fig = px.line_3d(
+    title="Helical Line",
     x=[x for x, _, _ in points],
     y=[y for _, y, _ in points],
     z=[z for _, _, z in points],
 )
+fig.layout.scene.camera.projection.type = "orthographic"
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

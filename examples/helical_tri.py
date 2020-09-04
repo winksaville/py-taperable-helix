@@ -10,7 +10,7 @@ from converging_helix import converging_helix as chelix
 radius = 1
 pitch = 1
 height = 1
-inset = 0.0
+inset_offset = 0.0
 cvrg_factor = 0.5
 first_t = 0
 last_t = 1
@@ -21,8 +21,8 @@ fL = chelix(
     radius=radius,
     pitch=pitch,
     height=height,
-    inset=inset,
     cvrg_factor=cvrg_factor,
+    inset_offset=inset_offset,
     horz_offset=0,
     vert_offset=+0.1,
     first_t=first_t,
@@ -33,8 +33,8 @@ fM = chelix(
     radius=radius,
     pitch=pitch,
     height=height,
-    inset=inset,
     cvrg_factor=cvrg_factor,
+    inset_offset=inset_offset,
     horz_offset=0.2,
     vert_offset=0,
     first_t=first_t,
@@ -45,8 +45,8 @@ fU = chelix(
     radius=radius,
     pitch=pitch,
     height=height,
-    inset=inset,
     cvrg_factor=cvrg_factor,
+    inset_offset=inset_offset,
     horz_offset=0,
     vert_offset=-0.1,
     first_t=first_t,
@@ -67,7 +67,10 @@ data_fU = list(
 )  # + 10, 10))) # + 0.01, 0.01)))
 data_fU.append(fU(last_t))
 
-fig = go.Figure()
+fig = go.Figure(
+    layout_title_text="Helical Triangle",
+    layout_scene_camera_projection_type="orthographic",
+)
 fig.add_trace(
     go.Scatter3d(
         # Extract x, y, z

@@ -7,8 +7,8 @@ def converging_helix(
     radius: float,
     pitch: float,
     height: float,
-    inset: float = 0,
     cvrg_factor: float = 0,
+    inset_offset: float = 0,
     horz_offset: float = 0,
     vert_offset: float = 0,
     first_t: float = 0,
@@ -22,42 +22,56 @@ def converging_helix(
 
     The initial use case is to create triangular or trapazoidal threads
     for nuts and bolts. Invoking converging_helix multiple times with the
-    same radius, pitch, inset, first_t, and last_t but with differing values
+    same radius, pitch, inset_offset, first_t, and last_t but with differing values
     for cvrg_factor, horz_offset and vert_offset the final solid will start
     at a point expand to the desired shape and then converge back to a
     point.
 
+    The helix is centered around the origin and radius and height define
+    basic box of the helix, but inset_offset, cvrg_factor, horz_offset and
+    vert_offset will modify the box. The parameters first_t and last_t
+    define the range of the parameter "t" parameter to the returned
+    function. The default values of first_t and last_t are 0 and 1. And
+    t / (last_t - first_t) defines the relative t and if the difference
+    is 0 the relative t will be 0 and only a single point will be created
+    typically at the origin + any _offsets.
+
     :param radius: of the basic helix.
     :param pitch: of pitch of the helix per revolution.
     :param height: of the cyclinder containing the helix.
-    :param inset: the top and bottom of the helicial
-    cyclinder where the helix actually starts.
     :param cvrg_factor: if cvrg_factor is 0 no fading occurs
     ortherise cvrg_factor is the percentage of the range of t that fades occur
     at the begining and end of that range.
+    :param inset_offset: the top and bottom of the helicial
+    cyclinder where the helix actually starts.
+    :param horz_offset: is added to the radius of the helix
+    :param vert_offset: is added to the nonimal z location of the helix
+    :param first_t: is the first t value passed to the returned function
+    :param last_t: is the last t value passed to the returned function
+
     """
-    # Reduce the height by 2 * inset. Threads start at inset
-    # and end at height - inset.
-    if inset < 0:
-        raise ValueError("inset must be >= 0")
+    # TODO: Test negative inset_offset works
+    # if inset_offset < 0:
+    #     raise ValueError("inset_offset must be >= 0")
 
-    helix_height: float = (abs(height) - (2 * inset))
-    if helix_height <= 0:
-        raise ValueError(f"(abs(height)={abs(height)}) < ((2 * inset)={2 * inset}), it must be >=")
-    helix_height *= -1 if height < 1 else 1
-    turns: float = pitch / helix_height
+    # Reduce the height by 2 * inset_offset. Threads start at inset_offset
+    # and end at height - inset_offset
+    helix_height: float = (height - (2 * inset_offset))
 
+    # The number or revolutions of the helix within the helix_height
+    turns: float = pitch / helix_height if pitch != 0 and helix_height != 0 else 1
+
+    t_range: float = last_t - first_t
+
+    # TODO: Test what happens with cvrg_factor > 0.5
     if cvrg_factor > 0.5:
         raise ValueError("cvrg_factor={cvrg_factor} > 0.5, should 0 .. 0.5 inclusive")
 
-    t_range: float = last_t - first_t
-    if (t_range <= 0):
-        raise ValueError("last_t={last_t} <= first_t={first_t}")
-
-
-    fade_range: float = 0
-    if cvrg_factor > 0:
-        fade_range = (last_t - first_t) * cvrg_factor
+    # TODO: Test what happens with cvrg_factor < 0
+    fade_range: float = t_range * cvrg_factor
+    # fade_range: float = 0
+    # if cvrg_factor > 0:
+    #     fade_range = (last_t - first_t) * cvrg_factor
 
     fade_in_mark: float = first_t + fade_range
     fade_out_mark: float = last_t - fade_range
@@ -74,13 +88,12 @@ def converging_helix(
 
         fade_angle: float
         to: float = t - first_t
+        rel_t: float = to / t_range if t_range != 0 else 0
 
         if (fade_range > 0) and (t < fade_in_mark):
             # FadeIn, fade_angle is 0 to 90deg so fade_scale is between 0 and 1
             fade_angle = +(pi / 2 * (t - first_t) / fade_range)
-        elif (fade_range == 0) or (
-            (t >= fade_in_mark) and (t < fade_out_mark)
-        ):
+        elif (fade_range == 0) or ((t >= fade_in_mark) and (t < fade_out_mark)):
             # No fading set fade_angle to 90deg so sin(fade_angle) == 1
             fade_angle = pi / 2
         else:
@@ -89,14 +102,19 @@ def converging_helix(
         fade_scale: float = sin(fade_angle)
 
         r: float = radius + (horz_offset * fade_scale)
-        a: float = (2 * pi / turns) * (to / t_range)
+        a: float = (2 * pi / turns) * rel_t
 
         x = r * sin(-a)
         y = r * cos(a)
-        z = (helix_height * t) + (vert_offset * fade_scale) + inset
-
+        z = (
+            (helix_height * (rel_t if pitch != 0 else 1))
+            + (vert_offset * fade_scale)
+            + inset_offset
+        )
 
         result = (x, y, z)
+        # print(f"f: first_t={first_t} last_t={last_t} to={to} rel_t={rel_t} tr={t_range} fr={fade_range} fim={fade_in_mark} fom={fade_out_mark} fa={fade_angle} fs={fade_scale} r={r} a={a}")
+        # print(f"f: result={result}")
         return result
 
     return func
