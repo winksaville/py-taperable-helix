@@ -1,4 +1,4 @@
-.PHONY: clean clean-test clean-pyc clean-build help format test dev
+.PHONY: clean clean-test clean-pyc clean-build help format test test-generate test-view dev docs
 .DEFAULT_GOAL := help
 
 define BROWSER_PYSCRIPT
@@ -51,6 +51,12 @@ clean-test: ## remove test and coverage artifacts
 
 t: test ## test
 
+test-generate: ## run tests creating data
+	pytest --generate
+
+test-view: ## run tests generating the view pages
+	pytest --view
+
 test: ## run tests quickly with the default Python
 	pytest
 
@@ -68,6 +74,17 @@ coverage: ## check code coverage quickly with the default Python
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html
+
+docs: ## generate Sphinx HTML documentation, including API docs
+	rm -f docs/converging_helix.rst
+	rm -f docs/modules.rst
+	sphinx-apidoc -o docs/ converging_helix
+	$(MAKE) -C docs clean
+	$(MAKE) -C docs html
+	$(BROWSER) docs/_build/html/index.html
+
+servedocs: docs ## compile the docs watching for changes
+	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
 
 release: dist ## package and upload a release
 	twine upload dist/*
