@@ -86,11 +86,10 @@ def generate_points(
     last_t: float,
     inc: float,
 ) -> List[Tuple[float, float, float]]:
-    l: List[Tuple[float, float, float]] = list(map(f, arange(first_t, last_t, inc)))
-    # print(f"generate_points: len(l)={len(l)}")
-    l.append(f(last_t))
-    # print(f"generate_points: len(1)={len(l)} first_t={first_t} last_t={last_t} l={l}")
-    return l
+    pts: List[Tuple[float, float, float]] = list(map(f, arange(first_t, last_t, inc)))
+    pts.append(f(last_t))
+    # print(f"generate_points: len(pts)={len(pts)} first_t={first_t} last_t={last_t} pts={pts}")
+    return pts
 
 
 def write_points(
@@ -141,7 +140,7 @@ def doit(
     if viewable:
         view(func_name, points, first_t, last_t, inc)
     expected = read_points(fname)
-    assert points == expected
+    assert isclose_points(points, expected)
 
 
 def test_helix(view, generate):
@@ -151,23 +150,13 @@ def test_helix(view, generate):
     inc = 0.1
     radius = 1
     height = 1
-    f = chelix(
-        radius=radius,
-        pitch=1,
-        height=height,
-        cvrg_factor=0,
-        inset_offset=0,
-        horz_offset=0,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
-    )
+    f = chelix(radius=radius, pitch=1, height=height, first_t=first_t, last_t=last_t)
     points = generate_points(f, first_t, last_t, inc)
     doit(
         func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
     )
 
-    # A "helix" with all points equidistant, witch is the raidus, from the center line
+    # A "helix" with all points equidistant from z-axis by the raidus
     assert all(
         [
             isclose(
@@ -181,11 +170,32 @@ def test_helix(view, generate):
     )
 
 
-def test_helix_cf_0pt1(view, generate):
+def test_helix_backwards(view, generate):
     func_name: str = sys._getframe().f_code.co_name
     first_t = 0
     last_t = 1
     inc = 0.1
+    radius = 1
+    height = 1
+    f = chelix(radius=radius, pitch=1, height=height, first_t=first_t, last_t=last_t)
+    points = generate_points(f, first_t, last_t, inc)
+    doit(
+        func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
+    )
+
+    # Validate the swapping of first_t and last_t creates the same helix
+    f = chelix(radius=radius, pitch=1, height=height, first_t=last_t, last_t=first_t)
+    # Generate the points, since we're starting at last_t we must use -inc
+    # otherwise we'll only generate the last point
+    points_backwards = generate_points(f, last_t, first_t, -inc)
+    assert isclose_points(points, points_backwards)
+
+
+def test_helix_cf_0pt1(view, generate):
+    func_name: str = sys._getframe().f_code.co_name
+    first_t = 0
+    last_t = 1
+    inc = 0.05
     radius = 1
     height = 1
     cf = 0.1
@@ -207,10 +217,15 @@ def test_helix_cf_0pt1(view, generate):
     )
 
     # A "helix" with a convergence factor of 0.1. The distance from the center line
-    # to the first and last points should be the radius and all other points should
-    # be greater than the radius
+    # to the first and last points should be the radius.
     assert isclose_tuple((0, radius, 0), points[0])
     assert isclose_tuple((0, radius, height), points[-1])
+
+    # The distance to the second point and the penultimate point are > radius
+    assert dist_3d(points[1], (0, 0, points[1][Z])) > radius
+    assert dist_3d(points[-2], (0, 0, points[-2][Z])) > radius
+
+    # All other points should be equal to radius + ho
     assert all(
         [
             isclose(
@@ -219,23 +234,21 @@ def test_helix_cf_0pt1(view, generate):
                 rel_tol=relative_tol,
                 abs_tol=absolute_tol,
             )
-            for pt in points[1:-1]
+            for pt in points[2:-2]
         ]
     )
 
 
 def test_helix_cf_validity(view, generate):
-    func_name: str = sys._getframe().f_code.co_name
     first_t = 0
     last_t = 1
-    inc = 0.1
     radius = 1
     height = 1
     ho = 0.2
 
     cf = -0.1
     with pytest.raises(ValueError):
-        f = chelix(
+        chelix(
             radius=radius,
             pitch=1,
             height=height,
@@ -248,7 +261,7 @@ def test_helix_cf_validity(view, generate):
         )
 
     cf = 0
-    f = chelix(
+    chelix(
         radius=radius,
         pitch=1,
         height=height,
@@ -261,7 +274,7 @@ def test_helix_cf_validity(view, generate):
     )
 
     cf = 0.5
-    f = chelix(
+    chelix(
         radius=radius,
         pitch=1,
         height=height,
@@ -275,7 +288,7 @@ def test_helix_cf_validity(view, generate):
 
     cf = 0.500000000000001
     with pytest.raises(ValueError):
-        f = chelix(
+        chelix(
             radius=radius,
             pitch=1,
             height=height,
