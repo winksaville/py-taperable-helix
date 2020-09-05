@@ -224,6 +224,70 @@ def test_helix_cf_0pt1(view, generate):
     )
 
 
+def test_helix_cf_validity(view, generate):
+    func_name: str = sys._getframe().f_code.co_name
+    first_t = 0
+    last_t = 1
+    inc = 0.1
+    radius = 1
+    height = 1
+    ho = 0.2
+
+    cf = -0.1
+    with pytest.raises(ValueError):
+        f = chelix(
+            radius=radius,
+            pitch=1,
+            height=height,
+            cvrg_factor=cf,
+            inset_offset=0,
+            horz_offset=ho,
+            vert_offset=0,
+            first_t=first_t,
+            last_t=last_t,
+        )
+
+    cf = 0
+    f = chelix(
+        radius=radius,
+        pitch=1,
+        height=height,
+        cvrg_factor=cf,
+        inset_offset=0,
+        horz_offset=ho,
+        vert_offset=0,
+        first_t=first_t,
+        last_t=last_t,
+    )
+
+    cf = 0.5
+    f = chelix(
+        radius=radius,
+        pitch=1,
+        height=height,
+        cvrg_factor=cf,
+        inset_offset=0,
+        horz_offset=ho,
+        vert_offset=0,
+        first_t=first_t,
+        last_t=last_t,
+    )
+
+    cf = 0.500000000000001
+    with pytest.raises(ValueError):
+        f = chelix(
+            radius=radius,
+            pitch=1,
+            height=height,
+            cvrg_factor=cf,
+            inset_offset=0,
+            horz_offset=ho,
+            vert_offset=0,
+            first_t=first_t,
+            last_t=last_t,
+        )
+
+
 def test_radius_0(view, generate):
     func_name: str = sys._getframe().f_code.co_name
     first_t = 0
