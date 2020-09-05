@@ -16,19 +16,12 @@ converging_helix
 
 Generate helixes that can converge to a point.
 
-
-* Free software: MIT license
-
 ..
-  TODO: create the Documentation
-  * Documentation: https://converging-helix.readthedocs.io.
-
-TODO
-----
-
-* Document how to use pytest
-* tox isn't working
-* create/generate documentation from converging_helix/converging_helix.py
+  # TODO: include the convering_helix doc string here
+  .. automodule:: converging_helix.converging_helix
+     :members:
+     :undoc-members:
+     :show-inheritance:
 
 Examples
 --------
