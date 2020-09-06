@@ -10,15 +10,15 @@ taperable_helix
   .. image:: https://img.shields.io/travis/winksaville/taperable_helix.svg
           :target: https://travis-ci.com/winksaville/taperable_helix
 
-  .. image:: https://readthedocs.org/projects/converging-helix/badge/?version=latest
-         :target: https://converging-helix.readthedocs.io/en/latest/?badge=latest
+  .. image:: https://readthedocs.org/projects/taperable-helix/badge/?version=latest
+         :target: https://taperable-helix.readthedocs.io/en/latest/?badge=latest
          :alt: Documentation Status
 
-Generate helixes that can converge to a point.
+Generate helixes that can tapers to a point.
 
 ..
-  # TODO: include the convering_helix doc string here
-  .. automodule:: taperable_helix.converging_helix
+  # TODO: include the taperable_helix doc string here
+  .. automodule:: taperable_helix.helix
      :members:
      :undoc-members:
      :show-inheritance:

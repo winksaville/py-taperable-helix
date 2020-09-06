@@ -1,11 +1,11 @@
-converging\_helix package
-=========================
+taperable\_helix package
+========================
 
 Submodules
 ----------
 
-converging\_helix.helix module
-------------------------------
+taperable\_helix.helix module
+-----------------------------
 
 .. automodule:: taperable_helix.helix
    :members:
