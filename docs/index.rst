@@ -6,9 +6,9 @@ Welcome to taperable_helix's documentation!
    :caption: Contents:
 
    readme
+   taperable_helix
    installation
    usage
-   modules
    contributing
    authors
    history

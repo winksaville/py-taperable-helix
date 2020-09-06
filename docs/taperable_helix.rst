@@ -1,11 +1,12 @@
 taperable\_helix package
 ========================
 
-Submodules
-----------
+..
+    Submodules
+    ----------
 
-taperable\_helix.helix module
------------------------------
+    taperable\_helix.helix module
+    -----------------------------
 
 .. automodule:: taperable_helix.helix
    :members:
@@ -13,10 +14,11 @@ taperable\_helix.helix module
    :show-inheritance:
 
 
-Module contents
----------------
+..
+   Module contents
+   ---------------
 
-.. automodule:: taperable_helix
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   .. automodule:: taperable_helix
+      :members:
+      :undoc-members:
+      :show-inheritance:

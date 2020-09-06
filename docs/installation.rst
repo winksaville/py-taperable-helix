@@ -5,40 +5,44 @@ Installation
 ============
 
 
-Stable release
---------------
+..
+  Stable release
+  --------------
 
-To install taperable_helix, run this command in your terminal:
-
-.. code-block:: console
-
-    $ pip install taperable_helix
-
-This is the preferred method to install taperable_helix, as it will always install the most recent stable release.
-
-If you don't have `pip`_ installed, this `Python installation guide`_ can guide
-you through the process.
-
-.. _pip: https://pip.pypa.io
-.. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
-
+  To install taperable-helix, run this command in your terminal:
+  
+  .. code-block:: console
+  
+      $ pip install taperable-helix
+  
+  This is the preferred method to install taperable_helix, as it will always install the most recent stable release.
+  
+  If you don't have `pip`_ installed, this `Python installation guide`_ can guide
+  you through the process.
+  
+  .. _pip: https://pip.pypa.io
+  .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
+  
 
 From sources
 ------------
 
 The sources for taperable_helix can be downloaded from the `Github repo`_.
 
-You can either clone the public repository:
+..
+  You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/winksaville/taperable_helix
+    $ git clone git://github.com/winksaville/py-taperable-helix taperable-helix
+    $ cd taperable-helix
 
-Or download the `tarball`_:
-
-.. code-block:: console
-
-    $ curl -OJL https://github.com/winksaville/taperable_helix/tarball/master
+..
+  Or download the `tarball`_:
+  
+  .. code-block:: console
+  
+      $ curl -OJL https://github.com/winksaville/taperable_helix/tarball/master
 
 Once you have a copy of the source, you can install it with:
 
@@ -46,6 +50,20 @@ Once you have a copy of the source, you can install it with:
 
     $ python setup.py install
 
+Or if you want to install for development
+
+.. code-block:: console
+
+    $ pip install -e . 
+
+Uninstall
+---------
+
+.. code-block:: console
+
+    $ pip uninstall taperable-helix
+
 
 .. _Github repo: https://github.com/winksaville/taperable_helix
-.. _tarball: https://github.com/winksaville/taperable_helix/tarball/master
+..
+   .. _tarball: https://github.com/winksaville/taperable_helix/tarball/master
