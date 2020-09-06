@@ -5,7 +5,7 @@ import plotly.express as px
 import plotly.graph_objs as go
 from numpy import arange
 
-from converging_helix import converging_helix as chelix
+from converging_helix import helix
 
 radius = 1
 pitch = 1
@@ -17,7 +17,7 @@ last_t = 1
 inc = 0.01
 
 # Create three helixes showing the fading
-fL = chelix(
+fL = helix(
     radius=radius,
     pitch=pitch,
     height=height,
@@ -29,7 +29,7 @@ fL = chelix(
     last_t=last_t,
 )
 
-fM = chelix(
+fM = helix(
     radius=radius,
     pitch=pitch,
     height=height,
@@ -41,7 +41,7 @@ fM = chelix(
     last_t=last_t,
 )
 
-fU = chelix(
+fU = helix(
     radius=radius,
     pitch=pitch,
     height=height,

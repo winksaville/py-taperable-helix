@@ -2,7 +2,7 @@ from math import cos, degrees, pi, sin
 from typing import Callable, Tuple
 
 
-def converging_helix(
+def helix(
     radius: float,
     pitch: float,
     height: float,
@@ -14,12 +14,13 @@ def converging_helix(
     last_t: float = 1,
 ) -> Callable[[float], Tuple[float, float, float]]:
     """
-    Returns a pure function which is nomially passed a value between 0
-    and 1 inclusive and then returns a tuple(x, y, z) which will be a point on
-    the desired helix. A helix can be as simple as a single line or be a set
-    of helical "wires" which define a "solid" that can start at a point and
-    the smoothly expand to the desired "solid" and then smoothly taper back
-    to a point.
+    A taperable helix, thelix, returns a pure function which is nomially
+    passed a value between 0 and 1 inclusive and then returns a tuple(x, y, z)
+    which will be a point on the desired helix.
+
+    A helix can be as simple as a single line or be a set of helical "wires"
+    which define a "solid" that can start at a point and the smoothly expand
+    to the desired "solid" and then smoothly taper back to a point.
 
     The nomial use case is to create triangular or trapazoidal threads
     for nuts and bolts. This is accomplished by invoking converging_helix

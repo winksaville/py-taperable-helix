@@ -4,10 +4,10 @@ converging\_helix package
 Submodules
 ----------
 
-converging\_helix.converging\_helix module
-------------------------------------------
+converging\_helix.helix module
+------------------------------
 
-.. automodule:: converging_helix.converging_helix
+.. automodule:: converging_helix.helix
    :members:
    :undoc-members:
    :show-inheritance:

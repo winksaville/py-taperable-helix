@@ -5,13 +5,13 @@ import plotly.express as px
 import plotly.graph_objs as go
 from numpy import arange
 
-from converging_helix import converging_helix as chelix
+from converging_helix import helix
 
 # Create a function which returns tuple(x,y,z) when
 # invoked with a parameter between 0 .. 1 inclusive.
 # The returned tuple will be a point on the helix.
 inc = 0.01
-f = chelix(radius=5, pitch=2, height=6)
+f = helix(radius=5, pitch=2, height=6)
 points = list(map(f, arange(0, 1 + inc, inc)))
 fig = px.line_3d(
     title="Helical Line",

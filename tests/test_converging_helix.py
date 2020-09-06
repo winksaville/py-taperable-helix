@@ -8,7 +8,7 @@ import plotly.express as px
 import pytest
 from numpy import arange
 
-from converging_helix import converging_helix as chelix
+from converging_helix import helix
 
 # Default abs_tol
 absolute_tol: float = 1e-6
@@ -150,7 +150,7 @@ def test_helix(view, generate):
     inc = 0.1
     radius = 1
     height = 1
-    f = chelix(radius=radius, pitch=1, height=height, first_t=first_t, last_t=last_t)
+    f = helix(radius=radius, pitch=1, height=height, first_t=first_t, last_t=last_t)
     points = generate_points(f, first_t, last_t, inc)
     doit(
         func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
@@ -177,14 +177,14 @@ def test_helix_backwards(view, generate):
     inc = 0.1
     radius = 1
     height = 1
-    f = chelix(radius=radius, pitch=1, height=height, first_t=first_t, last_t=last_t)
+    f = helix(radius=radius, pitch=1, height=height, first_t=first_t, last_t=last_t)
     points = generate_points(f, first_t, last_t, inc)
     doit(
         func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
     )
 
     # Validate the swapping of first_t and last_t creates the same helix
-    f = chelix(radius=radius, pitch=1, height=height, first_t=last_t, last_t=first_t)
+    f = helix(radius=radius, pitch=1, height=height, first_t=last_t, last_t=first_t)
     # Generate the points, since we're starting at last_t we must use -inc
     # otherwise we'll only generate the last point
     points_backwards = generate_points(f, last_t, first_t, -inc)
@@ -200,7 +200,7 @@ def test_helix_cf_0pt1(view, generate):
     height = 1
     cf = 0.1
     ho = 0.2
-    f = chelix(
+    f = helix(
         radius=radius,
         pitch=1,
         height=height,
@@ -248,7 +248,7 @@ def test_helix_cf_validity(view, generate):
 
     cf = -0.1
     with pytest.raises(ValueError):
-        chelix(
+        helix(
             radius=radius,
             pitch=1,
             height=height,
@@ -261,7 +261,7 @@ def test_helix_cf_validity(view, generate):
         )
 
     cf = 0
-    chelix(
+    helix(
         radius=radius,
         pitch=1,
         height=height,
@@ -274,7 +274,7 @@ def test_helix_cf_validity(view, generate):
     )
 
     cf = 0.5
-    chelix(
+    helix(
         radius=radius,
         pitch=1,
         height=height,
@@ -288,7 +288,7 @@ def test_helix_cf_validity(view, generate):
 
     cf = 0.500000000000001
     with pytest.raises(ValueError):
-        chelix(
+        helix(
             radius=radius,
             pitch=1,
             height=height,
@@ -306,7 +306,7 @@ def test_radius_0(view, generate):
     first_t = 0
     last_t = 1
     inc = 0.1
-    f = chelix(
+    f = helix(
         radius=0,
         pitch=1,
         height=1,
@@ -339,7 +339,7 @@ def test_radius_0_ft_0_lt_0(view, generate):
     first_t = 0
     last_t = 0
     inc = 0.1
-    f = chelix(
+    f = helix(
         radius=0,
         pitch=1,
         height=1,
@@ -365,7 +365,7 @@ def test_radius_0_ft_neg_1_lt_pos_1(view, generate):
     first_t = -1
     last_t = 1
     inc = 0.1
-    f = chelix(
+    f = helix(
         radius=0,
         pitch=1,
         height=1,
@@ -398,7 +398,7 @@ def test_radius_0_ft_0_lt_neg_1(view, generate):
     first_t = 0
     last_t = -1
     inc = -0.1
-    f = chelix(
+    f = helix(
         radius=0,
         pitch=1,
         height=1,
@@ -432,7 +432,7 @@ def test_radius_0_ft_neg_2_lt_neg_1(view, generate):
     first_t = -2
     last_t = -1
     inc = 0.1
-    f = chelix(
+    f = helix(
         radius=0,
         pitch=1,
         height=1,
@@ -466,7 +466,7 @@ def test_radius_0_ft_neg_1_lt_neg_2(view, generate):
     first_t = -1
     last_t = -2
     inc = -0.1
-    f = chelix(
+    f = helix(
         radius=0,
         pitch=1,
         height=1,
@@ -500,7 +500,7 @@ def test_radius_0_height_0(view, generate):
     first_t = 0
     last_t = 1
     inc = 0.1
-    f = chelix(
+    f = helix(
         radius=0,
         pitch=1,
         height=0,
@@ -525,7 +525,7 @@ def test_radius_0_height_neg_1(view, generate):
     first_t = 0
     last_t = 1
     inc = 0.1
-    f = chelix(
+    f = helix(
         radius=0,
         pitch=1,
         height=-1,
@@ -559,7 +559,7 @@ def test_radius_0_ft_pos_0_lt_neg_1_height_neg_1(view, generate):
     first_t = 0
     last_t = -1
     inc = -0.1
-    f = chelix(
+    f = helix(
         radius=0,
         pitch=1,
         height=-1,
@@ -594,7 +594,7 @@ def test_radius_0_io_0pt1(view, generate):
     last_t = 1
     inc = 0.1
     inset = 0.1
-    f = chelix(
+    f = helix(
         radius=0,
         pitch=1,
         height=1,
@@ -629,7 +629,7 @@ def test_radius_0_ft_0_lt_0_io_neg_0pt1(view, generate):
     last_t = 0
     inc = 0.1
     inset = -0.1
-    f = chelix(
+    f = helix(
         radius=0,
         pitch=1,
         height=1,
@@ -657,7 +657,7 @@ def test_pitch_0_height_0(view, generate):
     inc = 0.1
     radius = 1
     height = 0
-    f = chelix(
+    f = helix(
         radius=radius,
         pitch=0,
         height=height,
@@ -695,7 +695,7 @@ def test_pitch_0_height_1(view, generate):
     inc = 0.1
     radius = 1
     height = 1
-    f = chelix(
+    f = helix(
         radius=radius,
         pitch=0,
         height=height,
@@ -731,7 +731,7 @@ def test_pitch_0_ho_1(view, generate):
     inc = 0.1
     radius = 1
     ho = 1
-    f = chelix(
+    f = helix(
         radius=radius,
         pitch=0,
         height=0,
@@ -770,7 +770,7 @@ def test_pitch_0_vo_1(view, generate):
     inc = 0.1
     radius = 1
     vo = 1
-    f = chelix(
+    f = helix(
         radius=radius,
         pitch=0,
         height=0,
