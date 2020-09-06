@@ -1,7 +1,7 @@
-converging_helix
+taperable_helix
 ================
 
 .. toctree::
    :maxdepth: 4
 
-   converging_helix
+   taperable_helix

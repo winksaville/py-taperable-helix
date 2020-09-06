@@ -1,4 +1,4 @@
-* converging_helix version:
+* taperable_helix version:
 * Python version:
 * Operating System:
 

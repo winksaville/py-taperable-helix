@@ -1,14 +1,14 @@
 ================
-converging_helix
+taperable_helix
 ================
 
 ..
   TODO: eventually we'll enable the badges
-  .. image:: https://img.shields.io/pypi/v/converging_helix.svg
-        :target: https://pypi.python.org/pypi/converging_helix
+  .. image:: https://img.shields.io/pypi/v/taperable_helix.svg
+        :target: https://pypi.python.org/pypi/taperable_helix
 
-  .. image:: https://img.shields.io/travis/winksaville/converging_helix.svg
-          :target: https://travis-ci.com/winksaville/converging_helix
+  .. image:: https://img.shields.io/travis/winksaville/taperable_helix.svg
+          :target: https://travis-ci.com/winksaville/taperable_helix
 
   .. image:: https://readthedocs.org/projects/converging-helix/badge/?version=latest
          :target: https://converging-helix.readthedocs.io/en/latest/?badge=latest
@@ -18,7 +18,7 @@ Generate helixes that can converge to a point.
 
 ..
   # TODO: include the convering_helix doc string here
-  .. automodule:: converging_helix.converging_helix
+  .. automodule:: taperable_helix.converging_helix
      :members:
      :undoc-members:
      :show-inheritance:

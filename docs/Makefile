@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = python -msphinx
-SPHINXPROJ    = converging_helix
+SPHINXPROJ    = taperable_helix
 SOURCEDIR     = .
 BUILDDIR      = _build
 

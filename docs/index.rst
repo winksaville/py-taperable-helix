@@ -1,4 +1,4 @@
-Welcome to converging_helix's documentation!
+Welcome to taperable_helix's documentation!
 ============================================
 
 .. toctree::

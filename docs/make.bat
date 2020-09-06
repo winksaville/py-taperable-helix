@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=converging_helix
+set SPHINXPROJ=taperable_helix
 
 if "%1" == "" goto help
 

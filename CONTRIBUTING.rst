@@ -15,7 +15,7 @@ Types of Contributions
 Report Bugs
 ~~~~~~~~~~~
 
-Report bugs at https://github.com/winksaville/converging_helix/issues.
+Report bugs at https://github.com/winksaville/taperable_helix/issues.
 
 If you are reporting a bug, please include:
 
@@ -38,14 +38,14 @@ and "help wanted" is open to whoever wants to implement it.
 Write Documentation
 ~~~~~~~~~~~~~~~~~~~
 
-converging_helix could always use more documentation, whether as part of the
-official converging_helix docs, in docstrings, or even on the web in blog posts,
+taperable_helix could always use more documentation, whether as part of the
+official taperable_helix docs, in docstrings, or even on the web in blog posts,
 articles, and such.
 
 Submit Feedback
 ~~~~~~~~~~~~~~~
 
-The best way to send feedback is to file an issue at https://github.com/winksaville/converging_helix/issues.
+The best way to send feedback is to file an issue at https://github.com/winksaville/taperable_helix/issues.
 
 If you are proposing a feature:
 
@@ -57,18 +57,18 @@ If you are proposing a feature:
 Get Started!
 ------------
 
-Ready to contribute? Here's how to set up `converging_helix` for local development.
+Ready to contribute? Here's how to set up `taperable_helix` for local development.
 
-1. Fork the `converging_helix` repo on GitHub.
+1. Fork the `taperable_helix` repo on GitHub.
 2. Clone your fork locally::
 
-    $ git clone git@github.com:your_name_here/converging_helix.git
+    $ git clone git@github.com:your_name_here/taperable_helix.git
 
 3. Instantiate an (virtual) enviorment which supports python3.7, python3.8,
    isort, black, flake8 and bump2version::
 
     $ <instantiate your virtual environment if necessary>
-    $ cd converging_helix/
+    $ cd taperable_helix/
     $ python install -e .
 
 4. Create a branch for local development::
@@ -107,7 +107,7 @@ Tips
 
 To run a subset of tests::
 
-$ pytest tests.test_converging_helix
+$ pytest tests.test_taperable_helix
 
 
 Deploying

@@ -23,7 +23,7 @@ def helix(
     to the desired "solid" and then smoothly taper back to a point.
 
     The nomial use case is to create triangular or trapazoidal threads
-    for nuts and bolts. This is accomplished by invoking converging_helix
+    for nuts and bolts. This is accomplished by invoking taperable_helix
     multiple times with the same radius, pitch, cvrg_factor, inset_offset,
     first_t, and last_t but with differing values for  horz_offset and
     vert_offset. The returned functions are then invoked over with the desired

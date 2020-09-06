@@ -7,7 +7,7 @@ Submodules
 converging\_helix.helix module
 ------------------------------
 
-.. automodule:: converging_helix.helix
+.. automodule:: taperable_helix.helix
    :members:
    :undoc-members:
    :show-inheritance:
@@ -16,7 +16,7 @@ converging\_helix.helix module
 Module contents
 ---------------
 
-.. automodule:: converging_helix
+.. automodule:: taperable_helix
    :members:
    :undoc-members:
    :show-inheritance:

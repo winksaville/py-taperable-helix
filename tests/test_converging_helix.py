@@ -8,7 +8,7 @@ import plotly.express as px
 import pytest
 from numpy import arange
 
-from converging_helix import helix
+from taperable_helix import helix
 
 # Default abs_tol
 absolute_tol: float = 1e-6

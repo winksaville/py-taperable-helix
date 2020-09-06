@@ -5,7 +5,7 @@ import plotly.express as px
 import plotly.graph_objs as go
 from numpy import arange
 
-from converging_helix import helix
+from taperable_helix import helix
 
 # Create a function which returns tuple(x,y,z) when
 # invoked with a parameter between 0 .. 1 inclusive.

@@ -25,7 +25,7 @@ export PRINT_HELP_PYSCRIPT
 
 BROWSER := python -c "$$BROWSER_PYSCRIPT"
 
-format_srcs=setup.py converging_helix/ tests/ examples/
+format_srcs=setup.py taperable_helix/ tests/ examples/
 
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
@@ -75,15 +75,15 @@ format: ## format, lint py files with isort, black and flake8
 	flake8 ${format_srcs}
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source converging_helix -m pytest
+	coverage run --source taperable_helix -m pytest
 	coverage report -m
 	coverage html
 	$(BROWSER) htmlcov/index.html
 
 apidocs: ## Use sphinx-apidoc to rebuild the autodoc files
-	rm -f docs/converging_helix.rst
+	rm -f docs/taperable_helix.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ converging_helix
+	sphinx-apidoc -o docs/ taperable_helix
 
 docs: clean-docs ## generate Sphinx HTML documentation, including API docs
 	$(MAKE) -C docs html

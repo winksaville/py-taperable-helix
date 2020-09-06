@@ -2,6 +2,6 @@
 Usage
 =====
 
-To use converging_helix in a project::
+To use taperable_helix in a project::
 
-    import converging_helix
+    import taperable_helix
