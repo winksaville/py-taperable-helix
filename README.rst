@@ -14,7 +14,7 @@ taperable_helix
          :target: https://taperable-helix.readthedocs.io/en/latest/?badge=latest
          :alt: Documentation Status
 
-Generate helixes that can tapers to a point.
+Generate helixes that can taper to a point at each end.
 
 ..
   # TODO: include the taperable_helix doc string here
@@ -29,6 +29,11 @@ Examples
 * `Helical line`_
 
 .. image:: /data/helical_line.webp
+
+
+* `Helical triangle`_
+
+.. image:: /data/helical_tri.webp
 
 
 Prerequisites
@@ -67,3 +72,4 @@ package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_
 .. _CadQuery: https://github.com/cadquery/cadquery
 .. _forum: https://groups.google.com/g/cadquery
 .. _`Helical Line`: examples/helical_line.py
+.. _`Helical triangle`: examples/helical_tri.py
