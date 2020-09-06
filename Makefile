@@ -1,4 +1,6 @@
-.PHONY: clean clean-test clean-pyc clean-build help format test test-generate test-view dev docs
+.PHONY: clean clean-test clean-pyc clean-build clean-docs
+.PHONY: help format test test-generate test-view dev docs apidocs
+
 .DEFAULT_GOAL := help
 
 define BROWSER_PYSCRIPT
@@ -28,7 +30,7 @@ format_srcs=setup.py converging_helix/ tests/ examples/
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
+clean: clean-build clean-pyc clean-test clean-docs ## remove all build, test, coverage and Python artifacts
 
 clean-build: ## remove build artifacts
 	rm -fr build/
@@ -48,6 +50,9 @@ clean-test: ## remove test and coverage artifacts
 	rm -f .coverage
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
+
+clean-docs: ## remove doc artifacts
+	$(MAKE) -C docs clean
 
 t: test ## test
 
@@ -75,11 +80,12 @@ coverage: ## check code coverage quickly with the default Python
 	coverage html
 	$(BROWSER) htmlcov/index.html
 
-docs: ## generate Sphinx HTML documentation, including API docs
+apidocs: ## Use sphinx-apidoc to rebuild the autodoc files
 	rm -f docs/converging_helix.rst
 	rm -f docs/modules.rst
 	sphinx-apidoc -o docs/ converging_helix
-	$(MAKE) -C docs clean
+
+docs: clean-docs ## generate Sphinx HTML documentation, including API docs
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html
 
