@@ -14,16 +14,17 @@ def helix(
     last_t: float = 1,
 ) -> Callable[[float], Tuple[float, float, float]]:
     """
-    A taperable helix, thelix, returns a pure function which is nomially
-    passed a value between 0 and 1 inclusive and then returns a tuple(x, y, z)
-    which will be a point on the desired helix.
+    Returns a pure function. This returned function has one parameter,
+    an inclusive value between first_t and last_t which represents the
+    relative helix height. The returned value is the corresponding
+    point on the helix and is returned as a tuple(x, y, z).
 
     A helix can be as simple as a single line or be a set of helical "wires"
     which define a "solid" that can start at a point and the smoothly expand
     to the desired "solid" and then smoothly taper back to a point.
 
     The nomial use case is to create triangular or trapazoidal threads
-    for nuts and bolts. This is accomplished by invoking taperable_helix
+    for nuts and bolts. This is accomplished by invoking helix
     multiple times with the same radius, pitch, cvrg_factor, inset_offset,
     first_t, and last_t but with differing values for  horz_offset and
     vert_offset. The returned functions are then invoked over with the desired
@@ -44,6 +45,9 @@ def helix(
     returned function will be called with only first_t. The returned point will
     at the origin + any xxx_offsets.
 
+    Credit: Adam Urbanczyk from cadquery forum post:
+        https://groups.google.com/g/cadquery/c/5kVRpECcxAU/m/7no7_ja6AAAJ
+
     :param radius: of the basic helix.
     :param pitch: of pitch of the helix per revolution.
     :param height: of the cyclinder containing the helix.
@@ -59,8 +63,6 @@ def helix(
     :param first_t: is the first t value passed to the returned function
     :param last_t: is the last t value passed to the returned function
 
-    Credit: Adam Urbanczyk from cadquery forum post:
-        https://groups.google.com/g/cadquery/c/5kVRpECcxAU/m/7no7_ja6AAAJ
     """
     if cvrg_factor < 0 or cvrg_factor > 0.5:
         raise ValueError("cvrg_factor={cvrg_factor} should be 0 .. 0.5 inclusive")
