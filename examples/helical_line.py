@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
 import argparse
+from typing import List, Tuple
 
 import plotly.express as px
 import plotly.graph_objs as go
-from numpy import arange
+from numpy import linspace
 
 from taperable_helix import helix
 
-# Create a function which returns tuple(x,y,z) when
-# invoked with a parameter between 0 .. 1 inclusive.
-# The returned tuple will be a point on the helix.
-inc = 0.01
-f = helix(radius=5, pitch=2, height=6)
-points = list(map(f, arange(0, 1 + inc, inc)))
-fig = px.line_3d(
-    title="Helical Line",
-    x=[x for x, _, _ in points],
-    y=[y for _, y, _ in points],
-    z=[z for _, _, z in points],
-)
-fig.layout.scene.camera.projection.type = "orthographic"
+
+def helical_line(
+    radius: float = 5, pitch: float = 2, height: float = 6, num_points: int = 100
+) -> List[Tuple[float, float, float]]:
+    """
+    Return a List of points representing a helix
+    """
+    f = helix(radius, pitch, height)
+    points = list(map(f, linspace(start=0, stop=1, num=num_points, dtype=float)))
+    # print(f"helical_line: points={points}")
+    return points
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -41,6 +41,15 @@ if __name__ == "__main__":
         "-w", "--write", help="Write image and html files", action="store_true",
     )
     args = parser.parse_args()
+
+    points = helical_line()
+    fig = px.line_3d(
+        # title="Helical Line",
+        x=[x for x, _, _ in points],
+        y=[y for _, y, _ in points],
+        z=[z for _, _, z in points],
+    )
+    fig.layout.scene.camera.projection.type = "orthographic"
 
     if args.no_show:
         args.show = False

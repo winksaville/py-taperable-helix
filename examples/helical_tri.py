@@ -1,103 +1,45 @@
 #!/usr/bin/env python3
 import argparse
+from typing import List, Tuple
 
 import plotly.express as px
 import plotly.graph_objs as go
-from numpy import arange
+from numpy import linspace
 
 from taperable_helix import helix
 
-radius = 1
-pitch = 1
-height = 1
-inset_offset = 0.0
-cvrg_factor = 0.5
-first_t = 0
-last_t = 1
-inc = 0.01
 
-# Create three helixes showing the fading
-fL = helix(
-    radius=radius,
-    pitch=pitch,
-    height=height,
-    cvrg_factor=cvrg_factor,
-    inset_offset=inset_offset,
-    horz_offset=0,
-    vert_offset=+0.1,
-    first_t=first_t,
-    last_t=last_t,
-)
+def helical_triangle(
+    radius: float = 1,
+    pitch: float = 2,
+    height: float = 4,
+    num_points: int = 100,
+    tri_height=0.2,
+    tri_width=0.2,
+) -> (
+    List[Tuple[float, float, float]],
+    List[Tuple[float, float, float]],
+    List[Tuple[float, float, float]],
+):
+    cvrg_factor = 0.1
+    first_t = 0
+    last_t = 1
 
-fM = helix(
-    radius=radius,
-    pitch=pitch,
-    height=height,
-    cvrg_factor=cvrg_factor,
-    inset_offset=inset_offset,
-    horz_offset=0.2,
-    vert_offset=0,
-    first_t=first_t,
-    last_t=last_t,
-)
-
-fU = helix(
-    radius=radius,
-    pitch=pitch,
-    height=height,
-    cvrg_factor=cvrg_factor,
-    inset_offset=inset_offset,
-    horz_offset=0,
-    vert_offset=-0.1,
-    first_t=first_t,
-    last_t=last_t,
-)
-
-# Create a list of tuples for each point on the helix
-data_fL = list(
-    map(fL, arange(first_t, last_t + inc, inc))
-)  # + 10, 10))) # + 0.01, 0.01)))
-data_fL.append(fL(last_t))
-data_fM = list(
-    map(fM, arange(first_t, last_t + inc, inc))
-)  # + 10, 10))) # + 0.01, 0.01)))
-data_fM.append(fM(last_t))
-data_fU = list(
-    map(fU, arange(first_t, last_t + inc, inc))
-)  # + 10, 10))) # + 0.01, 0.01)))
-data_fU.append(fU(last_t))
-
-fig = go.Figure(
-    layout_title_text="Helical Triangle",
-    layout_scene_camera_projection_type="orthographic",
-)
-fig.add_trace(
-    go.Scatter3d(
-        # Extract x, y, z
-        x=[x for x, _, _ in data_fL],
-        y=[y for _, y, _ in data_fL],
-        z=[z for _, _, z in data_fL],
-        mode="lines",
+    # Create three helixes that taper to a point
+    fU = helix(
+        radius, pitch, height, cvrg_factor=cvrg_factor, vert_offset=tri_height / 2
     )
-)
-fig.add_trace(
-    go.Scatter3d(
-        # Extract x, y, z
-        x=[x for x, _, _ in data_fM],
-        y=[y for _, y, _ in data_fM],
-        z=[z for _, _, z in data_fM],
-        mode="lines",
+    points_fU = list(map(fU, linspace(first_t, last_t, num=100, dtype=float)))
+
+    fM = helix(radius, pitch, height, cvrg_factor=cvrg_factor, horz_offset=tri_width)
+    points_fM = list(map(fM, linspace(first_t, last_t, num=100, dtype=float)))
+
+    fL = helix(
+        radius, pitch, height, cvrg_factor=cvrg_factor, vert_offset=-tri_height / 2
     )
-)
-fig.add_trace(
-    go.Scatter3d(
-        # Extract x, y, z
-        x=[x for x, _, _ in data_fU],
-        y=[y for _, y, _ in data_fU],
-        z=[z for _, _, z in data_fU],
-        mode="lines",
-    )
-)
+    points_fL = list(map(fL, linspace(first_t, last_t, num=100, dtype=float)))
+    return (points_fU, points_fM, points_fL)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -119,6 +61,45 @@ if __name__ == "__main__":
         "-w", "--write", help="Write image and html files", action="store_true",
     )
     args = parser.parse_args()
+
+    # Create the points for the helixes
+    points_fU, points_fM, points_fL = helical_triangle()
+
+    # Create a plotly figure add three traces
+    fig = go.Figure(
+        # layout_title_text="Helical Triangle",
+        layout_scene_camera_projection_type="orthographic",
+    )
+    fig.add_trace(
+        go.Scatter3d(
+            # Extract x, y, z
+            x=[x for x, _, _ in points_fL],
+            y=[y for _, y, _ in points_fL],
+            z=[z for _, _, z in points_fL],
+            mode="lines",
+            name="Lower",
+        )
+    )
+    fig.add_trace(
+        go.Scatter3d(
+            # Extract x, y, z
+            x=[x for x, _, _ in points_fM],
+            y=[y for _, y, _ in points_fM],
+            z=[z for _, _, z in points_fM],
+            mode="lines",
+            name="Middle",
+        )
+    )
+    fig.add_trace(
+        go.Scatter3d(
+            # Extract x, y, z
+            x=[x for x, _, _ in points_fU],
+            y=[y for _, y, _ in points_fU],
+            z=[z for _, _, z in points_fU],
+            mode="lines",
+            name="Upper",
+        )
+    )
 
     if args.no_show:
         args.show = False
