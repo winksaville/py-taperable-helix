@@ -14,7 +14,9 @@ taperable_helix
          :target: https://taperable-helix.readthedocs.io/en/latest/?badge=latest
          :alt: Documentation Status
 
-Generate helixes that can taper to a point at each end.
+Generate helexes that can taper to a point at each end.
+
+* `helix.py`_
 
 ..
   # TODO: include the taperable_helix doc string here
@@ -55,11 +57,6 @@ Development and Examples
   * panda
   * python-kaleido
 
-Features
---------
-
-* TODO
-
 Credits
 -------
 
@@ -71,5 +68,6 @@ package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_
 .. _post: https://groups.google.com/g/cadquery/c/5kVRpECcxAU/m/7no7_ja6AAAJ
 .. _CadQuery: https://github.com/cadquery/cadquery
 .. _forum: https://groups.google.com/g/cadquery
-.. _`Helical Line`: examples/helical_line.py
-.. _`Helical triangle`: examples/helical_tri.py
+.. _`Helical Line`: /examples/helical_line.py
+.. _`Helical triangle`: /examples/helical_tri.py
+.. _`helix.py`: /taperable_helix/helix.py
