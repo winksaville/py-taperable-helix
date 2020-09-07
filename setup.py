@@ -39,7 +39,7 @@ setup(
     include_package_data=True,
     keywords="taperable_helix",
     name="taperable_helix",
-    packages=find_packages(include=["taperable_helix"]),#, "taperable_helix.*"]),
+    packages=find_packages(include=["taperable_helix"]),  # , "taperable_helix.*"]),
     setup_requires=setup_requirements,
     test_suite="tests",
     tests_require=test_requirements,
