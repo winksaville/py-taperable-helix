@@ -191,20 +191,20 @@ def test_helix_backwards(view, generate):
     assert isclose_points(points, points_backwards)
 
 
-def test_helix_cf_0pt1(view, generate):
+def test_helix_trp_0pt1(view, generate):
     func_name: str = sys._getframe().f_code.co_name
     first_t = 0
     last_t = 1
     inc = 0.05
     radius = 1
     height = 1
-    cf = 0.1
+    trp = 0.1
     ho = 0.2
     f = helix(
         radius=radius,
         pitch=1,
         height=height,
-        cvrg_factor=cf,
+        taper_rpos=trp,
         inset_offset=0,
         horz_offset=ho,
         vert_offset=0,
@@ -239,20 +239,20 @@ def test_helix_cf_0pt1(view, generate):
     )
 
 
-def test_helix_cf_validity(view, generate):
+def test_helix_trp_validity(view, generate):
     first_t = 0
     last_t = 1
     radius = 1
     height = 1
     ho = 0.2
 
-    cf = -0.1
+    trp = -0.1
     with pytest.raises(ValueError):
         helix(
             radius=radius,
             pitch=1,
             height=height,
-            cvrg_factor=cf,
+            taper_rpos=trp,
             inset_offset=0,
             horz_offset=ho,
             vert_offset=0,
@@ -260,12 +260,12 @@ def test_helix_cf_validity(view, generate):
             last_t=last_t,
         )
 
-    cf = 0
+    trp = 0
     helix(
         radius=radius,
         pitch=1,
         height=height,
-        cvrg_factor=cf,
+        taper_rpos=trp,
         inset_offset=0,
         horz_offset=ho,
         vert_offset=0,
@@ -273,12 +273,12 @@ def test_helix_cf_validity(view, generate):
         last_t=last_t,
     )
 
-    cf = 0.5
+    trp = 0.5
     helix(
         radius=radius,
         pitch=1,
         height=height,
-        cvrg_factor=cf,
+        taper_rpos=trp,
         inset_offset=0,
         horz_offset=ho,
         vert_offset=0,
@@ -286,13 +286,13 @@ def test_helix_cf_validity(view, generate):
         last_t=last_t,
     )
 
-    cf = 0.500000000000001
+    trp = 0.500000000000001
     with pytest.raises(ValueError):
         helix(
             radius=radius,
             pitch=1,
             height=height,
-            cvrg_factor=cf,
+            taper_rpos=trp,
             inset_offset=0,
             horz_offset=ho,
             vert_offset=0,
@@ -310,7 +310,7 @@ def test_radius_0(view, generate):
         radius=0,
         pitch=1,
         height=1,
-        cvrg_factor=0,
+        taper_rpos=0,
         inset_offset=0,
         horz_offset=0,
         vert_offset=0,
@@ -343,7 +343,7 @@ def test_radius_0_ft_0_lt_0(view, generate):
         radius=0,
         pitch=1,
         height=1,
-        cvrg_factor=0,
+        taper_rpos=0,
         inset_offset=0,
         horz_offset=0,
         vert_offset=0,
@@ -369,7 +369,7 @@ def test_radius_0_ft_neg_1_lt_pos_1(view, generate):
         radius=0,
         pitch=1,
         height=1,
-        cvrg_factor=0,
+        taper_rpos=0,
         inset_offset=0,
         horz_offset=0,
         vert_offset=0,
@@ -402,7 +402,7 @@ def test_radius_0_ft_0_lt_neg_1(view, generate):
         radius=0,
         pitch=1,
         height=1,
-        cvrg_factor=0,
+        taper_rpos=0,
         inset_offset=0,
         horz_offset=0,
         vert_offset=0,
@@ -436,7 +436,7 @@ def test_radius_0_ft_neg_2_lt_neg_1(view, generate):
         radius=0,
         pitch=1,
         height=1,
-        cvrg_factor=0,
+        taper_rpos=0,
         inset_offset=0,
         horz_offset=0,
         vert_offset=0,
@@ -470,7 +470,7 @@ def test_radius_0_ft_neg_1_lt_neg_2(view, generate):
         radius=0,
         pitch=1,
         height=1,
-        cvrg_factor=0,
+        taper_rpos=0,
         inset_offset=0,
         horz_offset=0,
         vert_offset=0,
@@ -504,7 +504,7 @@ def test_radius_0_height_0(view, generate):
         radius=0,
         pitch=1,
         height=0,
-        cvrg_factor=0,
+        taper_rpos=0,
         inset_offset=0,
         horz_offset=0,
         vert_offset=0,
@@ -529,7 +529,7 @@ def test_radius_0_height_neg_1(view, generate):
         radius=0,
         pitch=1,
         height=-1,
-        cvrg_factor=0,
+        taper_rpos=0,
         inset_offset=0,
         horz_offset=0,
         vert_offset=0,
@@ -563,7 +563,7 @@ def test_radius_0_ft_pos_0_lt_neg_1_height_neg_1(view, generate):
         radius=0,
         pitch=1,
         height=-1,
-        cvrg_factor=0,
+        taper_rpos=0,
         inset_offset=0,
         horz_offset=0,
         vert_offset=0,
@@ -598,7 +598,7 @@ def test_radius_0_io_0pt1(view, generate):
         radius=0,
         pitch=1,
         height=1,
-        cvrg_factor=0,
+        taper_rpos=0,
         inset_offset=inset,
         horz_offset=0,
         vert_offset=0,
@@ -633,7 +633,7 @@ def test_radius_0_ft_0_lt_0_io_neg_0pt1(view, generate):
         radius=0,
         pitch=1,
         height=1,
-        cvrg_factor=0,
+        taper_rpos=0,
         inset_offset=inset,
         horz_offset=0,
         vert_offset=0,
@@ -661,7 +661,7 @@ def test_pitch_0_height_0(view, generate):
         radius=radius,
         pitch=0,
         height=height,
-        cvrg_factor=0,
+        taper_rpos=0,
         inset_offset=0,
         horz_offset=0,
         vert_offset=0,
@@ -699,7 +699,7 @@ def test_pitch_0_height_1(view, generate):
         radius=radius,
         pitch=0,
         height=height,
-        cvrg_factor=0,
+        taper_rpos=0,
         inset_offset=0,
         horz_offset=0,
         vert_offset=0,
@@ -735,7 +735,7 @@ def test_pitch_0_ho_1(view, generate):
         radius=radius,
         pitch=0,
         height=0,
-        cvrg_factor=0,
+        taper_rpos=0,
         inset_offset=0,
         horz_offset=ho,
         vert_offset=0,
@@ -774,7 +774,7 @@ def test_pitch_0_vo_1(view, generate):
         radius=radius,
         pitch=0,
         height=0,
-        cvrg_factor=0,
+        taper_rpos=0,
         inset_offset=0,
         horz_offset=0,
         vert_offset=vo,

@@ -14,28 +14,26 @@ def helical_triangle(
     pitch: float = 2,
     height: float = 4,
     num_points: int = 100,
-    tri_height=0.2,
-    tri_width=0.2,
+    tri_height: float = 0.2,
+    tri_width: float = 0.2,
 ) -> (
     List[Tuple[float, float, float]],
     List[Tuple[float, float, float]],
     List[Tuple[float, float, float]],
 ):
-    cvrg_factor = 0.1
+    taper_rpos = 0.1
     first_t = 0
     last_t = 1
 
     # Create three helixes that taper to a point
-    fU = helix(
-        radius, pitch, height, cvrg_factor=cvrg_factor, vert_offset=tri_height / 2
-    )
+    fU = helix(radius, pitch, height, taper_rpos=taper_rpos, vert_offset=tri_height / 2)
     points_fU = list(map(fU, linspace(first_t, last_t, num=100, dtype=float)))
 
-    fM = helix(radius, pitch, height, cvrg_factor=cvrg_factor, horz_offset=tri_width)
+    fM = helix(radius, pitch, height, taper_rpos=taper_rpos, horz_offset=tri_width)
     points_fM = list(map(fM, linspace(first_t, last_t, num=100, dtype=float)))
 
     fL = helix(
-        radius, pitch, height, cvrg_factor=cvrg_factor, vert_offset=-tri_height / 2
+        radius, pitch, height, taper_rpos=taper_rpos, vert_offset=-tri_height / 2
     )
     points_fL = list(map(fL, linspace(first_t, last_t, num=100, dtype=float)))
     return (points_fU, points_fM, points_fL)
