@@ -56,9 +56,9 @@ if __name__ == "__main__":
 
     if args.write:
         try:
-            fname = "data/helical_line.html"
-            fig.write_html(fname)
-            print(f"wrote: {fname}")
+            # fname = "data/helical_line.html"
+            # fig.write_html(fname)
+            # print(f"wrote: {fname}")
 
             fname = "data/helical_line.webp"
             fig.write_image(fname)
