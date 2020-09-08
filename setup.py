@@ -17,7 +17,7 @@ setup_requirements = [
 ]
 
 test_requirements = [
-    "pytest>=3",
+    "pytest>=3.7",
 ]
 
 setup(
@@ -32,18 +32,18 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ],
-    description="Generate helixes that can tapers to a point",
+    description="Generate helixes that can optionally taper to a point",
     install_requires=requirements,
     license="MIT license",
     long_description=readme + "\n\n" + history,
     include_package_data=True,
     keywords="taperable_helix",
     name="taperable_helix",
-    packages=find_packages(include=["taperable_helix"]),  # , "taperable_helix.*"]),
+    packages=find_packages(include=["taperable_helix"]),
     setup_requires=setup_requirements,
     test_suite="tests",
     tests_require=test_requirements,
-    url="https://github.com/winksaville/taperable_helix",
+    url="https://github.com/winksaville/py-taperable-helix",
     version="0.1.0",
     zip_safe=False,
 )
