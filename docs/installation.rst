@@ -50,7 +50,7 @@ Once you have a copy of the source, you can install it with:
 
     $ python setup.py install
 
-Or if you want to install for development
+Or if you want to install in editable mode for development:
 
 .. code-block:: console
 
