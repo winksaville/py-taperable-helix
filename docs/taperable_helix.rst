@@ -2,17 +2,14 @@ taperable\_helix package
 ========================
 
 ..
-    Submodules
-    ----------
+   Using autofunction:: instead of automodule:: produces
+   better output:
 
-    taperable\_helix.helix module
-    -----------------------------
+   With automodule the name is taperable_helix.helix.helix.
+   With autofunciton it's taperable_helix.helix.
 
-.. automodule:: taperable_helix.helix
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
+.. autofunction:: taperable_helix.helix
 
 ..
    Module contents
