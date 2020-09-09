@@ -23,6 +23,21 @@ Installation
   .. _pip: https://pip.pypa.io
   .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
   
+Test release from testpypi
+--------------------------
+
+To install taperable-helix from testpypi, run this command in your terminal:
+
+.. code-block:: console
+
+   $ pip install --index-url https://test.pypi.org/simple/ taperable-helix
+
+If you don't have `pip`_ installed, this `Python installation guide`_ can guide
+you through the process.
+
+.. _pip: https://pip.pypa.io
+.. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
+
 
 From sources
 ------------
