@@ -27,7 +27,7 @@ export PRINT_HELP_PYSCRIPT
 
 BROWSER := python -c "$$BROWSER_PYSCRIPT"
 
-format_srcs=setup.py taperable_helix/ tests/ examples/
+format_srcs=setup.py taperable_helix/ tests/ examples/ docs/
 
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
