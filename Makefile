@@ -1,6 +1,7 @@
 .PHONY: clean clean-test clean-pyc clean-build clean-docs
 .PHONY: help format test test-generate test-view dev docs apidocs
 .PHONY: release-testpypi bumpver-patch bumpver-minor bumpver-major
+.PHONY: push-tags
 
 .DEFAULT_GOAL := help
 
@@ -99,13 +100,16 @@ release: dist ## package and upload a release
 release-testpypi: dist ## package and upload a release
 	twine upload --repository testpypi dist/*
 
-bumpver-patch:
+push-tags: ## Push tags to github which creates "Releases & Tags" and zipped srcs
+	git push --tags
+
+bumpver-patch: ## Bump patch field of current_version
 	bump2version patch
 
-bumpver-minor:
+bumpver-minor: ## Bump minor field of current_version
 	bump2version minor
 
-bumpver-major:
+bumpver-major: ## Bump major field of current_version
 	bump2version major
 
 dist: clean ## builds source and wheel package
