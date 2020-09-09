@@ -1,5 +1,6 @@
 .PHONY: clean clean-test clean-pyc clean-build clean-docs
 .PHONY: help format test test-generate test-view dev docs apidocs
+.PHONY: release-testpypi bumpver-patch bumpver-minor bumpver-major
 
 .DEFAULT_GOAL := help
 
@@ -94,6 +95,18 @@ servedocs: docs ## compile the docs watching for changes
 
 release: dist ## package and upload a release
 	twine upload dist/*
+
+release-testpypi: dist ## package and upload a release
+	twine upload --repository testpypi dist/*
+
+bumpver-patch:
+	bump2version patch
+
+bumpver-minor:
+	bump2version minor
+
+bumpver-major:
+	bump2version major
 
 dist: clean ## builds source and wheel package
 	python setup.py sdist
