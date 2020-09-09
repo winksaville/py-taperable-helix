@@ -53,7 +53,7 @@ def helix(
     :param last_t: is the last t value passed to the returned function
     """
     if taper_rpos < 0 or taper_rpos > 0.5:
-        raise ValueError("taper_rpos={taper_rpos} should be 0 .. 0.5 inclusive")
+        raise ValueError(f"taper_rpos={taper_rpos} should be 0 .. 0.5 inclusive")
 
     # Reduce the height by 2 * inset_offset. Threads start at inset_offset
     # and end at height - inset_offset
