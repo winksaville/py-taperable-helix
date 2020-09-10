@@ -16,11 +16,11 @@ def helical_triangle(
     num_points: int = 100,
     tri_height: float = 0.2,
     tri_width: float = 0.2,
-) -> (
+) -> Tuple[
     List[Tuple[float, float, float]],
     List[Tuple[float, float, float]],
     List[Tuple[float, float, float]],
-):
+]:
     taper_rpos = 0.1
     first_t = 0
     last_t = 1

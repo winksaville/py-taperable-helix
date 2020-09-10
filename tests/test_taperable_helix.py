@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import ast
 import sys
 from math import isclose, sqrt
@@ -17,15 +16,15 @@ relative_tol: float = 1e-9
 # Data directory string
 data_dir_str = "tests/data/"
 
-X: float = 0
-Y: float = 1
-Z: float = 2
+X: int = 0
+Y: int = 1
+Z: int = 2
 
 
 def xDist_3d(
     linePt1: Tuple[float, float, float], linePt2: Tuple[float, float, float]
 ) -> float:
-    xDist = linePt1[X] - linePt2[X]
+    xDist: float = linePt1[X] - linePt2[X]
     # print(f"xDist_3d:+- xDist={xDist}")
     return xDist
 
@@ -33,7 +32,7 @@ def xDist_3d(
 def yDist_3d(
     linePt1: Tuple[float, float, float], linePt2: Tuple[float, float, float]
 ) -> float:
-    yDist = linePt1[Y] - linePt2[Y]
+    yDist: float = linePt1[Y] - linePt2[Y]
     # print(f"yDist_3d:+- yDist={yDist}")
     return yDist
 
@@ -41,7 +40,7 @@ def yDist_3d(
 def zDist_3d(
     linePt1: Tuple[float, float, float], linePt2: Tuple[float, float, float]
 ) -> float:
-    zDist = linePt1[Z] - linePt2[Z]
+    zDist: float = linePt1[Z] - linePt2[Z]
     # print(f"zDist_3d:+- zDist={zDist}")
     return zDist
 
@@ -49,7 +48,7 @@ def zDist_3d(
 def dist_3d(
     linePt1: Tuple[float, float, float], linePt2: Tuple[float, float, float]
 ) -> float:
-    dist = sqrt(
+    dist: float = sqrt(
         pow(xDist_3d(linePt1, linePt2), 2)
         + pow(yDist_3d(linePt1, linePt2), 2)
         + pow(zDist_3d(linePt1, linePt2), 2)
@@ -92,9 +91,7 @@ def generate_points(
     return pts
 
 
-def write_points(
-    fname: str, points: List[Tuple[float, float, float]],
-) -> List[Tuple[float, float, float]]:
+def write_points(fname: str, points: List[Tuple[float, float, float]],) -> None:
     with open(fname + ".txt", "w") as f:
         for x, y, z in points:
             f.writelines(f"{x}, {y}, {z},\n")

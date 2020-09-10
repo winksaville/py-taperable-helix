@@ -75,6 +75,7 @@ format: ## format, lint py files with isort, black and flake8
 	isort ${format_srcs}
 	black ${format_srcs}
 	flake8 ${format_srcs}
+	mypy ${format_srcs}
 
 coverage: ## check code coverage quickly with the default Python
 	coverage run --source taperable_helix -m pytest
