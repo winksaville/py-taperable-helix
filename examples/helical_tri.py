@@ -21,19 +21,39 @@ def helical_triangle(
     List[Tuple[float, float, float]],
     List[Tuple[float, float, float]],
 ]:
-    taper_rpos = 0.1
+    taper_out_rpos = 0.1
+    taper_in_rpos = 0.9
     first_t = 0
     last_t = 1
 
     # Create three helixes that taper to a point
-    fU = helix(radius, pitch, height, taper_rpos=taper_rpos, vert_offset=tri_height / 2)
+    fU = helix(
+        radius,
+        pitch,
+        height,
+        taper_out_rpos=taper_out_rpos,
+        taper_in_rpos=taper_in_rpos,
+        vert_offset=tri_height / 2,
+    )
     points_fU = list(map(fU, linspace(first_t, last_t, num=100, dtype=float)))
 
-    fM = helix(radius, pitch, height, taper_rpos=taper_rpos, horz_offset=tri_width)
+    fM = helix(
+        radius,
+        pitch,
+        height,
+        taper_out_rpos=taper_out_rpos,
+        taper_in_rpos=taper_in_rpos,
+        horz_offset=tri_width,
+    )
     points_fM = list(map(fM, linspace(first_t, last_t, num=100, dtype=float)))
 
     fL = helix(
-        radius, pitch, height, taper_rpos=taper_rpos, vert_offset=-tri_height / 2
+        radius,
+        pitch,
+        height,
+        taper_out_rpos=taper_out_rpos,
+        taper_in_rpos=taper_in_rpos,
+        vert_offset=-tri_height / 2,
     )
     points_fL = list(map(fL, linspace(first_t, last_t, num=100, dtype=float)))
     return (points_fU, points_fM, points_fL)
