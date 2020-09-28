@@ -39,13 +39,14 @@ def helix(
     :param pitch: of pitch of the helix per revolution. I.e the distance
         between the height of a single "turn" of the helix.
     :param height: of the cyclinder containing the helix.
-    :param taper_out_rpos: is a decimal fraction such that (taper_out_rpos
-        * t_range) defines the t value where tapering out from first_t ends.
+    :param taper_out_rpos: is a decimal number with an inclusive range
+        of 0..1 such that (taper_out_rpos * t_range) defines the
+        t value where tapering out ends, it begins at t == first_t.
         A ValueError exception is raised if taper_out_rpos < 0 or > 1 or
         taper_out_rpos > taper_in_rpos.
-    :param taper_in_rpos: is a decimal fraction such that (taper_in_rpos
-        * t_range) defines the t value where tapering in begins. The tapering
-        out ends at t = last_t.
+    :param taper_in_rpos: is a decimal number with an inclusive range
+        of 0..1 such that (taper_in_rpos * t_range) defines the
+        t value where tapering in begins, it ends at t == last_t.
         A ValueError exception is raised if taper_out_rpos < 0 or > 1 or
         taper_out_rpos > taper_in_rpos.
     :param inset_offset: the helix will start at z = inset_offset and will end
@@ -55,16 +56,16 @@ def helix(
     :param first_t: is the first t value passed to the returned function
     :param last_t: is the last t value passed to the returned function
     """
-    if (taper_in_rpos != 0) and (taper_out_rpos > taper_in_rpos):
+    if taper_out_rpos > taper_in_rpos:
         raise ValueError(
             f"taper_out_rpos:{taper_out_rpos} > taper_in_rpos:{taper_in_rpos}"
         )
 
     if taper_out_rpos < 0 or taper_out_rpos > 1:
-        raise ValueError(f"taper_out_rpos:{taper_out_rpos} should be >= 0 and < 1")
+        raise ValueError(f"taper_out_rpos:{taper_out_rpos} should be >= 0 and <= 1")
 
     if taper_in_rpos < 0 or taper_in_rpos > 1:
-        raise ValueError(f"taper_in_rpos:{taper_in_rpos} should be >= 0 and < 1")
+        raise ValueError(f"taper_in_rpos:{taper_in_rpos} should be >= 0 and <= 1")
 
     # Reduce the height by 2 * inset_offset. Threads start at inset_offset
     # and end at height - inset_offset
@@ -77,10 +78,14 @@ def helix(
     t_range: float = last_t - first_t
 
     taper_out_range: float = t_range * taper_out_rpos
-    taper_out: float = first_t + taper_out_range
+    taper_out_ends: float = first_t + taper_out_range
 
     taper_in_range: float = t_range * (1 - taper_in_rpos)
-    taper_in: float = last_t - taper_in_range
+    taper_in_starts: float = last_t - taper_in_range
+
+    print(f"helix: ft={first_t} lt={last_t} tr={t_range}")
+    print(f"helix: tor={taper_out_range} toe={taper_out_ends}")
+    print(f"helix: tir={taper_in_range} tis={taper_in_starts}")
 
     def func(t: float) -> Tuple[float, float, float]:
         """
@@ -97,21 +102,25 @@ def helix(
         toffset: float = t - first_t
         rel_height: float = toffset / t_range if t_range != 0 else 0
 
-        if (taper_out_range > 0) and (t < taper_out):
+        if t < taper_out_ends:
             # Taper out from a point, taper_scale will be between 0 and 1
             # This code path is used when t < taper_out and this helix
             # will smoothly taper from a point as taper angle starts at 0
             # and increases to p/2.
+            print(f"out t={t} < taper_out_ends:{taper_out_ends}")
             taper_angle = pi / 2 * (t - first_t) / taper_out_range
-        elif (taper_out_range == 0) or ((t >= taper_out) and (t < taper_in)):
+        elif (t >= taper_out_ends) and (t < taper_in_starts):
             # No tapering, taper_scale == 1
+            print(f"no  t={t} >= taper_out_ends:{taper_out_ends} <= taper_in_starts:{taper_in_starts}")
             taper_angle = pi / 2
         else:
-            # This code path is used when t >= taper_in and the this helix
+            # This code path is used when t > taper_in_starts and the this helix
             # will smoothly taper to a point as taper angle starts at p/2
             # and decrease to 0.
+            print(f"in  t={t} > taper_in_starts:{taper_in_starts}")
             taper_angle = pi / 2 * (last_t - t) / taper_in_range
 
+        print(f"taper_angle={taper_angle}")
         taper_scale = sin(taper_angle)
 
         r: float = radius + (horz_offset * taper_scale)
@@ -126,11 +135,8 @@ def helix(
         )
 
         result = (x, y, z)
-        # print(f"f: ft={first_t} lt={last_t} rh={rel_height} tr={t_range")
-        # print(f"f: tor={taper_out_range} to={taper_out}")
-        # print(f"f: tir={taper_in_range} ti={taper_in}")")
-        # print(f"f: tpa={taper_angle} tps={taper_scale} r={r} a={a}")
-        # print(f"f: t={t} toffset={toffset} result={result}")
+        print(f"f: tpa={taper_angle} tps={taper_scale} r={r} a={a}")
+        print(f"f: t={t} toffset={toffset} rh={rel_height} result={result}")
         return result
 
     return func
