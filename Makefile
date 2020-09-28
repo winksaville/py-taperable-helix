@@ -81,8 +81,8 @@ format: ## format, lint py files with isort, black and flake8
 coverage: ## check code coverage quickly with the default Python
 	coverage run --source taperable_helix -m pytest
 	coverage report -m
-	coverage html
-	$(BROWSER) htmlcov/index.html
+	# coverage html
+	# $(BROWSER) htmlcov/index.html
 
 apidocs: ## Use sphinx-apidoc to rebuild the autodoc files
 	rm -f docs/taperable_helix.rst
@@ -91,6 +91,8 @@ apidocs: ## Use sphinx-apidoc to rebuild the autodoc files
 
 docs: clean-docs ## generate Sphinx HTML documentation, including API docs
 	$(MAKE) -C docs html
+
+showdocs: ## Use the browser to show the docs
 	$(BROWSER) docs/_build/html/index.html
 
 servedocs: docs ## compile the docs watching for changes
@@ -114,7 +116,7 @@ bumpver-minor: ## Bump minor field of current_version
 bumpver-major: ## Bump major field of current_version
 	bump2version major
 
-dist: clean ## builds source and wheel package
+dist: clean docs ## builds source and wheel package
 	python setup.py sdist
 	python setup.py bdist_wheel
 	ls -l dist
