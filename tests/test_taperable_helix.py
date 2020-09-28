@@ -7,7 +7,7 @@ import plotly.express as px
 import pytest
 from numpy import arange
 
-from taperable_helix import helix
+from taperable_helix import DFLT_FIRST_T, DFLT_LAST_T, helix
 
 # Default abs_tol
 absolute_tol: float = 1e-6
@@ -91,7 +91,7 @@ def generate_points(
     return pts
 
 
-def write_points(fname: str, points: List[Tuple[float, float, float]],) -> None:
+def write_points(fname: str, points: List[Tuple[float, float, float]]) -> None:
     with open(fname + ".txt", "w") as f:
         for x, y, z in points:
             f.writelines(f"{x}, {y}, {z},\n")
@@ -102,6 +102,13 @@ def read_points(fname: str) -> List[Tuple[float, float, float]]:
     with open(fname + ".txt", "r") as f:
         points = [ast.literal_eval(line) for line in f]
     return points
+
+
+def print_points(prompt: str, points: List[Tuple[float, float, float]]) -> None:
+    print(f"{prompt}: ", end="")
+    for x, y, z in points:
+        print(f"({x:.4f}, {y:.4f}, {z:.4f})", end=", ")
+    print("")
 
 
 def view(
@@ -142,15 +149,19 @@ def doit(
 
 def test_helix(view, generate):
     func_name: str = sys._getframe().f_code.co_name
-    first_t = 0
-    last_t = 1
     inc = 0.1
     radius = 1
     height = 1
-    f = helix(radius=radius, pitch=1, height=height, first_t=first_t, last_t=last_t)
-    points = generate_points(f, first_t, last_t, inc)
+    f = helix(radius=radius, pitch=1, height=height)
+    points = generate_points(f, DFLT_FIRST_T, DFLT_LAST_T, inc)
     doit(
-        func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        DFLT_FIRST_T,
+        DFLT_LAST_T,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A "helix" with all points equidistant from z-axis by the raidus
@@ -169,29 +180,33 @@ def test_helix(view, generate):
 
 def test_helix_backwards(view, generate):
     func_name: str = sys._getframe().f_code.co_name
-    first_t = 0
-    last_t = 1
     inc = 0.1
     radius = 1
     height = 1
-    f = helix(radius=radius, pitch=1, height=height, first_t=first_t, last_t=last_t)
-    points = generate_points(f, first_t, last_t, inc)
+    f = helix(radius=radius, pitch=1, height=height)
+    points = generate_points(f, DFLT_FIRST_T, DFLT_LAST_T, inc)
     doit(
-        func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        DFLT_FIRST_T,
+        DFLT_LAST_T,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # Validate the swapping of first_t and last_t creates the same helix
-    f = helix(radius=radius, pitch=1, height=height, first_t=last_t, last_t=first_t)
+    f = helix(
+        radius=radius, pitch=1, height=height, first_t=DFLT_LAST_T, last_t=DFLT_FIRST_T
+    )
     # Generate the points, since we're starting at last_t we must use -inc
     # otherwise we'll only generate the last point
-    points_backwards = generate_points(f, last_t, first_t, -inc)
+    points_backwards = generate_points(f, DFLT_LAST_T, DFLT_FIRST_T, -inc)
     assert isclose_points(points, points_backwards)
 
 
 def test_helix_trp_0pt1(view, generate):
     func_name: str = sys._getframe().f_code.co_name
-    first_t = 0
-    last_t = 1
     inc = 0.05
     radius = 1
     height = 1
@@ -204,15 +219,17 @@ def test_helix_trp_0pt1(view, generate):
         height=height,
         taper_out_rpos=torp,
         taper_in_rpos=tirp,
-        inset_offset=0,
         horz_offset=ho,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
     )
-    points = generate_points(f, first_t, last_t, inc)
+    points = generate_points(f, DFLT_FIRST_T, DFLT_LAST_T, inc)
     doit(
-        func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        DFLT_FIRST_T,
+        DFLT_LAST_T,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A "helix" with a convergence factor of 0.1. The distance from the center line
@@ -239,11 +256,8 @@ def test_helix_trp_0pt1(view, generate):
 
 
 def test_helix_trp_validity(view, generate):
-    first_t = 0
-    last_t = 1
     radius = 1
     height = 1
-    ho = 0.2
 
     torp = -0.1
     tirp = 0.9
@@ -254,15 +268,10 @@ def test_helix_trp_validity(view, generate):
             height=height,
             taper_out_rpos=torp,
             taper_in_rpos=tirp,
-            inset_offset=0,
-            horz_offset=ho,
-            vert_offset=0,
-            first_t=first_t,
-            last_t=last_t,
         )
 
     torp = 1.00000000000001
-    trip = 0.9
+    tirp = 0.9
     with pytest.raises(ValueError):
         helix(
             radius=radius,
@@ -270,11 +279,6 @@ def test_helix_trp_validity(view, generate):
             height=height,
             taper_out_rpos=torp,
             taper_in_rpos=tirp,
-            inset_offset=0,
-            horz_offset=ho,
-            vert_offset=0,
-            first_t=first_t,
-            last_t=last_t,
         )
 
     torp = 0.1
@@ -286,11 +290,6 @@ def test_helix_trp_validity(view, generate):
             height=height,
             taper_out_rpos=torp,
             taper_in_rpos=tirp,
-            inset_offset=0,
-            horz_offset=ho,
-            vert_offset=0,
-            first_t=first_t,
-            last_t=last_t,
         )
 
     torp = 0.1
@@ -302,109 +301,52 @@ def test_helix_trp_validity(view, generate):
             height=height,
             taper_out_rpos=torp,
             taper_in_rpos=tirp,
-            inset_offset=0,
-            horz_offset=ho,
-            vert_offset=0,
-            first_t=first_t,
-            last_t=last_t,
         )
 
     torp = 0
     tirp = 0.9
     helix(
-        radius=radius,
-        pitch=1,
-        height=height,
-        taper_out_rpos=torp,
-        taper_in_rpos=tirp,
-        inset_offset=0,
-        horz_offset=ho,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
+        radius=radius, pitch=1, height=height, taper_out_rpos=torp, taper_in_rpos=tirp,
     )
 
     torp = 0.9
-    tirp = 0
+    tirp = 1
     helix(
-        radius=radius,
-        pitch=1,
-        height=height,
-        taper_out_rpos=torp,
-        taper_in_rpos=tirp,
-        inset_offset=0,
-        horz_offset=ho,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
+        radius=radius, pitch=1, height=height, taper_out_rpos=torp, taper_in_rpos=tirp,
     )
 
     torp = 0.1
     tirp = 0.7
     helix(
-        radius=radius,
-        pitch=1,
-        height=height,
-        taper_out_rpos=torp,
-        taper_in_rpos=tirp,
-        inset_offset=0,
-        horz_offset=ho,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
+        radius=radius, pitch=1, height=height, taper_out_rpos=torp, taper_in_rpos=tirp,
     )
 
     torp = 0.7
     tirp = 0.8
     helix(
-        radius=radius,
-        pitch=1,
-        height=height,
-        taper_out_rpos=torp,
-        taper_in_rpos=tirp,
-        inset_offset=0,
-        horz_offset=ho,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
+        radius=radius, pitch=1, height=height, taper_out_rpos=torp, taper_in_rpos=tirp,
     )
 
     torp = 0.1
     tirp = 0.9
     helix(
-        radius=radius,
-        pitch=1,
-        height=height,
-        taper_out_rpos=torp,
-        taper_in_rpos=tirp,
-        inset_offset=0,
-        horz_offset=ho,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
+        radius=radius, pitch=1, height=height, taper_out_rpos=torp, taper_in_rpos=tirp,
     )
 
 
 def test_radius_0(view, generate):
     func_name: str = sys._getframe().f_code.co_name
-    first_t = 0
-    last_t = 1
     inc = 0.1
-    f = helix(
-        radius=0,
-        pitch=1,
-        height=1,
-        taper_out_rpos=0,
-        taper_in_rpos=0,
-        inset_offset=0,
-        horz_offset=0,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
-    )
-    points = generate_points(f, first_t, last_t, inc)
+    f = helix(radius=0, pitch=1, height=1,)
+    points = generate_points(f, DFLT_FIRST_T, DFLT_LAST_T, inc)
     doit(
-        func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        DFLT_FIRST_T,
+        DFLT_LAST_T,
+        inc,
+        viewable=view,
+        generate=generate,
     )
     # A vertical line starting at 0 ending at 1
     first_pt = (0, 0, 0)
@@ -424,18 +366,7 @@ def test_radius_0_ft_0_lt_0(view, generate):
     first_t = 0
     last_t = 0
     inc = 0.1
-    f = helix(
-        radius=0,
-        pitch=1,
-        height=1,
-        taper_out_rpos=0,
-        taper_in_rpos=0,
-        inset_offset=0,
-        horz_offset=0,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
-    )
+    f = helix(radius=0, pitch=1, height=1, first_t=first_t, last_t=last_t,)
     points = generate_points(f, first_t, last_t, inc)
     doit(
         func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
@@ -451,18 +382,7 @@ def test_radius_0_ft_neg_1_lt_pos_1(view, generate):
     first_t = -1
     last_t = 1
     inc = 0.1
-    f = helix(
-        radius=0,
-        pitch=1,
-        height=1,
-        taper_out_rpos=0,
-        taper_in_rpos=0,
-        inset_offset=0,
-        horz_offset=0,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
-    )
+    f = helix(radius=0, pitch=1, height=1, first_t=first_t, last_t=last_t,)
     points = generate_points(f, first_t, last_t, inc)
     doit(
         func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
@@ -485,18 +405,7 @@ def test_radius_0_ft_0_lt_neg_1(view, generate):
     first_t = 0
     last_t = -1
     inc = -0.1
-    f = helix(
-        radius=0,
-        pitch=1,
-        height=1,
-        taper_out_rpos=0,
-        taper_in_rpos=0,
-        inset_offset=0,
-        horz_offset=0,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
-    )
+    f = helix(radius=0, pitch=1, height=1, first_t=first_t, last_t=last_t,)
     points = generate_points(f, first_t, last_t, inc)
     doit(
         func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
@@ -520,18 +429,7 @@ def test_radius_0_ft_neg_2_lt_neg_1(view, generate):
     first_t = -2
     last_t = -1
     inc = 0.1
-    f = helix(
-        radius=0,
-        pitch=1,
-        height=1,
-        taper_out_rpos=0,
-        taper_in_rpos=0,
-        inset_offset=0,
-        horz_offset=0,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
-    )
+    f = helix(radius=0, pitch=1, height=1, first_t=first_t, last_t=last_t,)
     points = generate_points(f, first_t, last_t, inc)
     doit(
         func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
@@ -555,18 +453,7 @@ def test_radius_0_ft_neg_1_lt_neg_2(view, generate):
     first_t = -1
     last_t = -2
     inc = -0.1
-    f = helix(
-        radius=0,
-        pitch=1,
-        height=1,
-        taper_out_rpos=0,
-        taper_in_rpos=0,
-        inset_offset=0,
-        horz_offset=0,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
-    )
+    f = helix(radius=0, pitch=1, height=1, first_t=first_t, last_t=last_t,)
     points = generate_points(f, first_t, last_t, inc)
     doit(
         func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
@@ -587,24 +474,17 @@ def test_radius_0_ft_neg_1_lt_neg_2(view, generate):
 
 def test_radius_0_height_0(view, generate):
     func_name: str = sys._getframe().f_code.co_name
-    first_t = 0
-    last_t = 1
     inc = 0.1
-    f = helix(
-        radius=0,
-        pitch=1,
-        height=0,
-        taper_out_rpos=0,
-        taper_in_rpos=0,
-        inset_offset=0,
-        horz_offset=0,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
-    )
-    points = generate_points(f, first_t, last_t, inc)
+    f = helix(radius=0, pitch=1, height=0,)
+    points = generate_points(f, DFLT_FIRST_T, DFLT_LAST_T, inc)
     doit(
-        func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        DFLT_FIRST_T,
+        DFLT_LAST_T,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # All points at origin (0, 0, 0)
@@ -613,24 +493,17 @@ def test_radius_0_height_0(view, generate):
 
 def test_radius_0_height_neg_1(view, generate):
     func_name: str = sys._getframe().f_code.co_name
-    first_t = 0
-    last_t = 1
     inc = 0.1
-    f = helix(
-        radius=0,
-        pitch=1,
-        height=-1,
-        taper_out_rpos=0,
-        taper_in_rpos=0,
-        inset_offset=0,
-        horz_offset=0,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
-    )
-    points = generate_points(f, first_t, last_t, inc)
+    f = helix(radius=0, pitch=1, height=-1,)
+    points = generate_points(f, DFLT_FIRST_T, DFLT_LAST_T, inc)
     doit(
-        func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        DFLT_FIRST_T,
+        DFLT_LAST_T,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A vertical line starting at 0 ending at -1
@@ -651,18 +524,7 @@ def test_radius_0_ft_pos_0_lt_neg_1_height_neg_1(view, generate):
     first_t = 0
     last_t = -1
     inc = -0.1
-    f = helix(
-        radius=0,
-        pitch=1,
-        height=-1,
-        taper_out_rpos=0,
-        taper_in_rpos=0,
-        inset_offset=0,
-        horz_offset=0,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
-    )
+    f = helix(radius=0, pitch=1, height=-1, first_t=first_t, last_t=last_t,)
     points = generate_points(f, first_t, last_t, inc)
     doit(
         func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
@@ -683,25 +545,18 @@ def test_radius_0_ft_pos_0_lt_neg_1_height_neg_1(view, generate):
 
 def test_radius_0_io_0pt1(view, generate):
     func_name: str = sys._getframe().f_code.co_name
-    first_t = 0
-    last_t = 1
     inc = 0.1
     inset = 0.1
-    f = helix(
-        radius=0,
-        pitch=1,
-        height=1,
-        taper_out_rpos=0,
-        taper_in_rpos=0,
-        inset_offset=inset,
-        horz_offset=0,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
-    )
-    points = generate_points(f, first_t, last_t, inc)
+    f = helix(radius=0, pitch=1, height=1, inset_offset=inset,)
+    points = generate_points(f, DFLT_FIRST_T, DFLT_LAST_T, inc)
     doit(
-        func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        DFLT_FIRST_T,
+        DFLT_LAST_T,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A vertical line starting at 0.1 ending at 0.9
@@ -724,16 +579,7 @@ def test_radius_0_ft_0_lt_0_io_neg_0pt1(view, generate):
     inc = 0.1
     inset = -0.1
     f = helix(
-        radius=0,
-        pitch=1,
-        height=1,
-        taper_out_rpos=0,
-        taper_in_rpos=0,
-        inset_offset=inset,
-        horz_offset=0,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
+        radius=0, pitch=1, height=1, inset_offset=inset, first_t=first_t, last_t=last_t,
     )
     points = generate_points(f, first_t, last_t, inc)
     doit(
@@ -747,26 +593,19 @@ def test_radius_0_ft_0_lt_0_io_neg_0pt1(view, generate):
 
 def test_pitch_0_height_0(view, generate):
     func_name: str = sys._getframe().f_code.co_name
-    first_t = 0
-    last_t = 1
     inc = 0.1
     radius = 1
     height = 0
-    f = helix(
-        radius=radius,
-        pitch=0,
-        height=height,
-        taper_out_rpos=0,
-        taper_in_rpos=0,
-        inset_offset=0,
-        horz_offset=0,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
-    )
-    points = generate_points(f, first_t, last_t, inc)
+    f = helix(radius=radius, pitch=0, height=height,)
+    points = generate_points(f, DFLT_FIRST_T, DFLT_LAST_T, inc)
     doit(
-        func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        DFLT_FIRST_T,
+        DFLT_LAST_T,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A "circle" centered around the origin
@@ -786,26 +625,19 @@ def test_pitch_0_height_0(view, generate):
 
 def test_pitch_0_height_1(view, generate):
     func_name: str = sys._getframe().f_code.co_name
-    first_t = 0
-    last_t = 1
     inc = 0.1
     radius = 1
     height = 1
-    f = helix(
-        radius=radius,
-        pitch=0,
-        height=height,
-        taper_out_rpos=0,
-        taper_in_rpos=0,
-        inset_offset=0,
-        horz_offset=0,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
-    )
-    points = generate_points(f, first_t, last_t, inc)
+    f = helix(radius=radius, pitch=0, height=height,)
+    points = generate_points(f, DFLT_FIRST_T, DFLT_LAST_T, inc)
     doit(
-        func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        DFLT_FIRST_T,
+        DFLT_LAST_T,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A "circle" centered around the height
@@ -823,26 +655,19 @@ def test_pitch_0_height_1(view, generate):
 
 def test_pitch_0_ho_1(view, generate):
     func_name: str = sys._getframe().f_code.co_name
-    first_t = 0
-    last_t = 1
     inc = 0.1
     radius = 1
     ho = 1
-    f = helix(
-        radius=radius,
-        pitch=0,
-        height=0,
-        taper_out_rpos=0,
-        taper_in_rpos=0,
-        inset_offset=0,
-        horz_offset=ho,
-        vert_offset=0,
-        first_t=first_t,
-        last_t=last_t,
-    )
-    points = generate_points(f, first_t, last_t, inc)
+    f = helix(radius=radius, pitch=0, height=0, horz_offset=ho,)
+    points = generate_points(f, DFLT_FIRST_T, DFLT_LAST_T, inc)
     doit(
-        func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        DFLT_FIRST_T,
+        DFLT_LAST_T,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A "circle" centered at 0 with a radius = radius + ho
@@ -863,26 +688,19 @@ def test_pitch_0_ho_1(view, generate):
 
 def test_pitch_0_vo_1(view, generate):
     func_name: str = sys._getframe().f_code.co_name
-    first_t = 0
-    last_t = 1
     inc = 0.1
     radius = 1
     vo = 1
-    f = helix(
-        radius=radius,
-        pitch=0,
-        height=0,
-        taper_out_rpos=0,
-        taper_in_rpos=0,
-        inset_offset=0,
-        horz_offset=0,
-        vert_offset=vo,
-        first_t=first_t,
-        last_t=last_t,
-    )
-    points = generate_points(f, first_t, last_t, inc)
+    f = helix(radius=radius, pitch=0, height=0, vert_offset=vo,)
+    points = generate_points(f, DFLT_FIRST_T, DFLT_LAST_T, inc)
     doit(
-        func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        DFLT_FIRST_T,
+        DFLT_LAST_T,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A "circle" centered around the horz_offset
