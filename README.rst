@@ -63,7 +63,7 @@ Examples
         return points
 
     
-.. image:: /data/helical_line.webp
+.. image:: https://raw.githubusercontent.com/winksaville/py-taperable-helix/master/data/helical_line.webp
 
 
 * `helical_tri.py`_
@@ -101,7 +101,7 @@ Examples
         return (points_fU, points_fM, points_fL)
 
 
-.. image:: /data/helical_tri.webp
+.. image:: https://raw.githubusercontent.com/winksaville/py-taperable-helix/master/data/helical_tri.webp
 
 
 Prerequisites
