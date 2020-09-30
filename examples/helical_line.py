@@ -6,13 +6,14 @@ import plotly.express as px
 import plotly.graph_objs as go
 from numpy import linspace
 
-from taperable_helix import helix
+from taperable_helix import Helix, HelixLocation, helix
 
 
 def helical_line(
     radius: float = 5, pitch: float = 2, height: float = 6, num_points: int = 100
 ) -> List[Tuple[float, float, float]]:
-    f = helix(radius, pitch, height)
+    h: Helix = Helix(radius=radius, pitch=pitch, height=height)
+    f = helix(h)
     points = list(map(f, linspace(start=0, stop=1, num=num_points, dtype=float)))
     # print(f"helical_line: points={points}")
     return points
