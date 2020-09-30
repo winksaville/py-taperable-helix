@@ -6,7 +6,7 @@ import plotly.express as px
 import plotly.graph_objs as go
 from numpy import linspace
 
-from taperable_helix import helix
+from taperable_helix import Helix, HelixLocation, helix
 
 
 def helical_triangle(
@@ -21,41 +21,26 @@ def helical_triangle(
     List[Tuple[float, float, float]],
     List[Tuple[float, float, float]],
 ]:
-    taper_out_rpos = 0.1
-    taper_in_rpos = 0.9
-    first_t = 0
-    last_t = 1
 
     # Create three helixes that taper to a point
-    fU = helix(
-        radius,
-        pitch,
-        height,
-        taper_out_rpos=taper_out_rpos,
-        taper_in_rpos=taper_in_rpos,
-        vert_offset=tri_height / 2,
-    )
-    points_fU = list(map(fU, linspace(first_t, last_t, num=100, dtype=float)))
 
-    fM = helix(
-        radius,
-        pitch,
-        height,
-        taper_out_rpos=taper_out_rpos,
-        taper_in_rpos=taper_in_rpos,
-        horz_offset=tri_width,
+    # Create the base Helix
+    h: Helix = Helix(
+        radius=radius, pitch=pitch, height=height, taper_out_rpos=0.1, taper_in_rpos=0.9
     )
-    points_fM = list(map(fM, linspace(first_t, last_t, num=100, dtype=float)))
 
-    fL = helix(
-        radius,
-        pitch,
-        height,
-        taper_out_rpos=taper_out_rpos,
-        taper_in_rpos=taper_in_rpos,
-        vert_offset=-tri_height / 2,
-    )
-    points_fL = list(map(fL, linspace(first_t, last_t, num=100, dtype=float)))
+    # The Upper points, horz_offset defaults to 0
+    fU = helix(h, HelixLocation(vert_offset=tri_height / 2))
+    points_fU = list(map(fU, linspace(h.first_t, h.last_t, num=100, dtype=float)))
+
+    # The Lower points, again horz_offset defaults to 0
+    fL = helix(h, HelixLocation(vert_offset=-tri_height / 2))
+    points_fL = list(map(fL, linspace(h.first_t, h.last_t, num=100, dtype=float)))
+
+    # The Middle point, change vert_offset to 0
+    fM = helix(h, HelixLocation(horz_offset=tri_width))
+    points_fM = list(map(fM, linspace(h.first_t, h.last_t, num=100, dtype=float)))
+
     return (points_fU, points_fM, points_fL)
 
 
