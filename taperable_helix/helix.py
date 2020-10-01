@@ -6,53 +6,38 @@ from typing import Callable, Optional, Tuple
 @dataclass
 class Helix:
     """
-    A Helix has radius, pitch and height parameters to define a
-    basic helix. Using just those parameters you can create simple single
-    line helixes. But the primary purpose for helix() is to create a set
-    of helical "wires" using non-zero values for taper_rpos, horz_offset and
-    vert_offset to define solid helixes that can taper at each end to a point.
+    This represents a basic Helix. The required attributes are radius,
+    pitch and height. Thse attributes create simple single line helix.
+    But the primary purpose for Helix is to create a set of helical "wires"
+    using non-zero values for taper_rpos, horz_offset and vert_offset to
+    define solid helixes that can taper at each end to a point.
+
     This is useful for creating internal and external threads for nuts and
     bolts.  This is accomplished by invoking helix() multiple times with
     same radius, pitch, taper_rpos, inset_offset, first_t, and last_t.
-    But with differing values for  horz_offset and vert_offset. And then
-    using the returned functions to define the helical edges of the thread.
+    But with different HelixLocation radius, horz_offset and vert_offset.
 
-    :param radius: of the basic helix.
-    :param pitch: of pitch of the helix per revolution. I.e the distance
-        between the height of a single "turn" of the helix.
-    :param height: of the cyclinder containing the helix.
-    :param taper_out_rpos: is a decimal number with an inclusive range
-        of 0..1 such that (taper_out_rpos * t_range) defines the
-        t value where tapering out ends, it begins at t == first_t.
-        A ValueError exception is raised if taper_out_rpos < 0 or > 1 or
-        taper_out_rpos > taper_in_rpos. Default is 0 which is no out taper
-    :param taper_in_rpos: is a decimal number with an inclusive range
-        of 0..1 such that (taper_in_rpos * t_range) defines the
-        t value where tapering in begins, it ends at t == last_t.
-        A ValueError exception is raised if taper_out_rpos < 0 or > 1 or
-        taper_out_rpos > taper_in_rpos. Default is 1 which is no in taper.
-    :param inset_offset: the helix will start at z = inset_offset and will end
-        at z = height - (2 * inset_offset). Default 0.
-    :param first_t: is the first t value passed to the returned function. Default 0
-    :param last_t: is the last t value passed to the returned function. Default 1
+    Each returned function will then generate a helix defining an edge
+    of the thread. The edges can be used to make faces and subsequently
+    a solid of the thread. This can then be combined with the "core" objects
+    which the threads are "attached" using a "union" operator.
     """
 
-    radius: float
-    pitch: float
-    height: float
-    taper_out_rpos: float = 0
-    taper_in_rpos: float = 1
-    inset_offset: float = 0
-    first_t: float = 0
-    last_t: float = 1
+    radius: float  #: radius of the basic helix.
+    pitch: float  #: pitch of the helix per revolution. I.e the distance between the height of a single "turn" of the helix.
+    height: float  #: height of the cyclinder containing the helix.
+    taper_out_rpos: float = 0  #: taper_out_rpos: is a decimal number with an inclusive range of 0..1 such that (taper_out_rpos * t_range) defines the t value where tapering out ends, it begins at t == first_t.  A ValueError exception is raised if taper_out_rpos < 0 or > 1 or taper_out_rpos > taper_in_rpos. Default is 0 which is no out taper
+    taper_in_rpos: float = 1  #: taper_in_rpos: is a decimal number with an inclusive range of 0..1 such that (taper_in_rpos * t_range) defines the t value where tapering in begins, it ends at t == last_t.  A ValueError exception is raised if taper_out_rpos < 0 or > 1 or taper_out_rpos > taper_in_rpos. Default is 1 which is no in taper.
+    inset_offset: float = 0  #: inset_offset: the helix will start at z = inset_offset and will end at z = height - (2 * inset_offset). Default 0.
+    first_t: float = 0  #: first_t is the first t value passed to the returned function. Default 0
+    last_t: float = 1  #: last_t is the last t value passed to the returned function. Default 1
 
 
 @dataclass
 class HelixLocation:
-    # The internal thread radius and an array of HelixLocation
-    radius: Optional[float] = None
-    horz_offset: float = 0
-    vert_offset: float = 0
+    radius: Optional[float] = None  #: radis of helix if none h.radius is used
+    horz_offset: float = 0  #: horzitional offset added to the radius
+    vert_offset: float = 0  #: vertical added to z of radius
 
 
 def helix(
@@ -72,6 +57,11 @@ def helix(
     on the helix defined by Helix.
 
     Credit: Adam Urbanczyk from cadquery [forum post](https://groups.google.com/g/cadquery/c/5kVRpECcxAU/m/7no7_ja6AAAJ)
+
+    :param h: Is the basic heliex to generate.
+    :param hl: Is the location for the helix.
+    :returns: A function which is passes a value between h.first_t and h.last_t
+    and returns a 3D point tuple (x, y, z)
     """
     if h.taper_out_rpos > h.taper_in_rpos:
         raise ValueError(

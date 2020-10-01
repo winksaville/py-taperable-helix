@@ -36,21 +36,20 @@ Package Docs
 
     @dataclass
     class Helix:
-        radius: float
-        pitch: float
-        height: float
-        taper_out_rpos: float = 0
-        taper_in_rpos: float = 1
-        inset_offset: float = 0
-        first_t: float = 0
-        last_t: float = 1
+        radius: float #: radius of the basic helix.
+        pitch: float #: pitch of the helix per revolution. I.e the distance between the height of a single "turn" of the helix.
+        height: float #: height of the cyclinder containing the helix.
+        taper_out_rpos: float = 0 #: taper_out_rpos: is a decimal number with an inclusive range of 0..1 such that (taper_out_rpos * t_range) defines the t value where tapering out ends, it begins at t == first_t.  A ValueError exception is raised if taper_out_rpos < 0 or > 1 or taper_out_rpos > taper_in_rpos. Default is 0 which is no out taper
+        taper_in_rpos: float = 1 #: taper_in_rpos: is a decimal number with an inclusive range of 0..1 such that (taper_in_rpos * t_range) defines the t value where tapering in begins, it ends at t == last_t.  A ValueError exception is raised if taper_out_rpos < 0 or > 1 or taper_out_rpos > taper_in_rpos. Default is 1 which is no in taper.
+        inset_offset: float = 0 #: inset_offset: the helix will start at z = inset_offset and will end at z = height - (2 * inset_offset). Default 0.
+        first_t: float = 0 #: first_t is the first t value passed to the returned function. Default 0
+        last_t: float = 1 #: last_t is the last t value passed to the returned function. Default 1
 
     @dataclass
     class HelixLocation:
-        # The internal thread radius and an array of HelixLocation
-        radius: Optional[float] = None
-        horz_offset: float = 0
-        vert_offset: float = 0
+        radius: Optional[float] = None  #: radis of helix if none h.radius is used
+        horz_offset: float = 0  #: horzitional offset added to the radius
+        vert_offset: float = 0  #: vertical added to z of radius
 
 
     def helix(
