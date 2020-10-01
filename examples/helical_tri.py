@@ -6,7 +6,7 @@ import plotly.express as px
 import plotly.graph_objs as go
 from numpy import linspace
 
-from taperable_helix import Helix, HelixLocation, helix
+from taperable_helix import Helix, HelixLocation
 
 
 def helical_triangle(
@@ -30,15 +30,15 @@ def helical_triangle(
     )
 
     # The Upper points, horz_offset defaults to 0
-    fU = helix(h, HelixLocation(vert_offset=tri_height / 2))
+    fU = h.helix(HelixLocation(vert_offset=tri_height / 2))
     points_fU = list(map(fU, linspace(h.first_t, h.last_t, num=100, dtype=float)))
 
     # The Lower points, again horz_offset defaults to 0
-    fL = helix(h, HelixLocation(vert_offset=-tri_height / 2))
+    fL = h.helix(HelixLocation(vert_offset=-tri_height / 2))
     points_fL = list(map(fL, linspace(h.first_t, h.last_t, num=100, dtype=float)))
 
     # The Middle point, change vert_offset to 0
-    fM = helix(h, HelixLocation(horz_offset=tri_width))
+    fM = h.helix(HelixLocation(horz_offset=tri_width))
     points_fM = list(map(fM, linspace(h.first_t, h.last_t, num=100, dtype=float)))
 
     return (points_fU, points_fM, points_fL)
