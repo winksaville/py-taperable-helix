@@ -76,6 +76,9 @@ format: ## format, lint py files with isort, black and flake8
 	isort ${format_srcs}
 	black ${format_srcs}
 	flake8 ${format_srcs}
+
+.PHONY: mypy
+mypy: ## Run mypy over ${format_srcs}
 	mypy ${format_srcs}
 
 coverage: ## check code coverage quickly with the default Python
