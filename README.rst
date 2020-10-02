@@ -19,6 +19,7 @@ Generate helixes that can optionally taper to a point at each end.
 * GitHub repo: https://github.com/winksaville/py-taperable-helix/
 * Documentation: https://taperable-helix.readthedocs.io/
 * PyPi package: https://pypi.org/project/taperable-helix/
+* Test PyPi package: https://test.pypi.org/project/taperable-helix/
 * Free software: MIT license
 
 
