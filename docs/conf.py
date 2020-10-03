@@ -25,6 +25,40 @@ sys.path.insert(0, os.path.abspath(".."))
 
 import taperable_helix
 
+# -- Filter issue 123 related to dataclasses ---------------------------
+# FROM: https://github.com/agronholm/sphinx-autodoc-typehints/issues/123#issuecomment-698314873
+#
+# Probable Real Fix: https://github.com/agronholm/sphinx-autodoc-typehints/pull/153
+# I was able to supress the warning by adding the following code which is just like pull 153:
+#    # The generated dataclass __init__() is weird and needs second condition
+#    # if '<locals>' in obj.__qualname__ and not (what == 'method' and name.endswith('.__init__')):
+#    if '<locals>' in obj.__qualname__ and not (
+#        (what == 'method' and name.endswith('.__init__'))
+#        or (what == 'class' and obj.__qualname__.endswith('.__init__'))
+#    ):
+#        logger.warning(f"WINK: app={app} what={what} name={name} obj.__qualname_={obj.__qualname__} options={options} signature={signature} return_ann={return_annotation}")
+#        logger.warning(
+#            'Cannot treat a function defined as a local function: "%s"  (use @functools.wraps)',
+#            name)
+#        return
+
+import logging as pylogging
+from sphinx.util import logging
+
+# Workaround for https://github.com/agronholm/sphinx-autodoc-typehints/issues/123
+# When this https://github.com/agronholm/sphinx-autodoc-typehints/pull/153
+# gets merged, we can remove this
+class FilterForIssue123(pylogging.Filter):
+    def filter(self, record: pylogging.LogRecord) -> bool:
+        # You probably should make this check more specific by checking
+        # that dataclass name is in the message, so that you don't filter out
+        # other meaningful warnings
+        return not record.getMessage().startswith("Cannot treat a function")
+
+# Register the filter
+logging.getLogger("sphinx_autodoc_typehints").logger.addFilter(FilterForIssue123())
+# End of a workaround
+
 # -- General configuration ---------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -90,7 +124,7 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "alabaster"
+html_theme = "sphinx_rtd_theme"
 
 # Theme options are theme-specific and customize the look and feel of a
 # theme further.  For a list of options available for each theme, see the

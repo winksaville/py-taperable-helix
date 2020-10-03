@@ -9,6 +9,8 @@ Welcome to taperable_helix's documentation!
    usage
    contributing
    authors
+
+..
    history
 
 .. toctree::

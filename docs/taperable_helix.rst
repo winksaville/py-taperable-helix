@@ -2,19 +2,22 @@ taperable\_helix package
 ========================
 
 ..
-   Using autofunction:: instead of automodule:: produces
-   better output:
+ Automodule doesn't work?
 
-   With automodule the name is taperable_helix.helix.helix.
-   With autofunciton it's taperable_helix.helix.
+ .. automodule:: taperable_helix
+     :members:
+     :undoc-members:
+     :show-inheritance:
 
-   # Now that its back to a module we need the old style
-   .. autofunction:: taperable_helix.helix
 
-Module contents
----------------
-
-    .. automodule:: taperable_helix
+.. autoclass:: taperable_helix.HelixLocation
         :members:
         :undoc-members:
-        :show-inheritance:
+        :member-order: bysource
+..        :show-inheritance:
+
+.. autoclass:: taperable_helix.Helix
+        :members:
+        :undoc-members:
+        :member-order: bysource
+..        :show-inheritance:

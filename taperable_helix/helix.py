@@ -6,14 +6,15 @@ from typing import Callable, Optional, Tuple
 @dataclass
 class HelixLocation:
     radius: Optional[float] = None  #: radius of helix if none h.radius
-    horz_offset: float = 0  #: horizontal offset is added to the radius and then x and y calculated
+    horz_offset: float = 0  #: horizontal offset  added to radius then x and y calculated
     vert_offset: float = 0  #: vertical added to z of radius
 
 
 @dataclass
 class Helix:
-    """
-    This represents a basic Helix. The required attributes are radius,
+    """This class represents a taperable Helix.
+
+    The required attributes are radius,
     pitch and height. Thse attributes create simple single line helix.
     But the primary purpose for Helix is to create a set of helical "wires"
     using non-zero values for taper_rpos, horz_offset and vert_offset to
@@ -30,38 +31,66 @@ class Helix:
     which the threads are "attached" using a "union" operator.
     """
 
-    radius: float  #: radius of the basic helix.
-    pitch: float  #: pitch of the helix per revolution. I.e the distance between the height of a single "turn" of the helix.
+    radius: float #: radius of the basic helix.
+
+    pitch: float
+    """pitch of the helix per revolution. I.e the distance between the
+    height of a single "turn" of the helix.
+    """
+
     height: float  #: height of the cyclinder containing the helix.
-    taper_out_rpos: float = 0  #: taper_out_rpos: is a decimal number with an inclusive range of 0..1 such that (taper_out_rpos * t_range) defines the t value where tapering out ends, it begins at t == first_t.  A ValueError exception is raised if taper_out_rpos < 0 or > 1 or taper_out_rpos > taper_in_rpos. Default is 0 which is no out taper
-    taper_in_rpos: float = 1  #: taper_in_rpos: is a decimal number with an inclusive range of 0..1 such that (taper_in_rpos * t_range) defines the t value where tapering in begins, it ends at t == last_t.  A ValueError exception is raised if taper_out_rpos < 0 or > 1 or taper_out_rpos > taper_in_rpos. Default is 1 which is no in taper.
-    inset_offset: float = 0  #: inset_offset: the helix will start at z = inset_offset and will end at z = height - (2 * inset_offset). Default 0.
+
+    taper_out_rpos: float = 0
+    """taper_out_rpos is a decimal number with an inclusive range of 0..1
+    such that (taper_out_rpos * t_range) defines the t value where tapering
+    out ends, it begins at t == first_t.  A ValueError exception is raised
+    if taper_out_rpos < 0 or > 1 or taper_out_rpos > taper_in_rpos.
+    Default is 0 which is no out taper.
+    """
+
+    taper_in_rpos: float = 1
+    """taper_in_rpos: is a decimal number with an inclusive range of 0..1
+    such that (taper_in_rpos * t_range) defines the t value where tapering
+    in begins, it ends at t == last_t.  A ValueError exception is raised
+    if taper_out_rpos < 0 or > 1 or taper_out_rpos > taper_in_rpos.
+    Default is 1 which is no in taper.
+    """
+
+    inset_offset: float = 0
+    """inset_offset: the helix will start at z = inset_offset and will
+    end at z = height - (2 * inset_offset). Default 0.
+    """
+
     first_t: float = 0  #: first_t is the first t value passed to the returned function. Default 0
-    last_t: float = 1  #: last_t is the last t value passed to the returned function. Default 1
+
+    last_t: float = 1 #: last_t is the last t value passed to the returned function. Default 1
+
 
     def helix(
         self, hl: Optional[HelixLocation] = None
     ) -> Callable[[float], Tuple[float, float, float]]:
-        """
-        This function takes an optional HelixLocation which refines the
-        location of the final helix. If HelixLocation is None then the radius is
-        Helix.radius and horz_offset and vert_offset will be 0. If its not None
+        """This function returns a Function that is used to generates points
+        on a helix.
+
+        It takes an optional HelixLocation which refines the location of the
+        final helix when its tapered. If HelixLocation is None then the radius
+        is Helix.radius and horz_offset and vert_offset will be 0. If its not None
         HelixLocation.radius maybe None, in which case Helix.radius will be used.
         and HelixLocation.horz_offset will be added to the radius and used to
         calculate x and y. The HelixLocation.vert_offset will be added to z.
 
         This function returns a function, f. The funciton f that takes one parameter,
         an inclusive value between first_t and last_t.  We then define
-        t_range=last_t-first_t and the rel_height=(last_t-t)/t_range. furthermore
-        when using the first_t=0 and last_t=1, the defaults, t is rel_height.
-        The value returned from f is a tuple(x, y, z) which defines a point
-        on the helix defined by Helix.
+        t_range=last_t-first_t and the rel_height=(last_t-t)/t_range. The rel_height
+        is the relative position along the "z-axis" which is used to calculate function
+        functions returned tuple(x, y, z) for a point on the helix.
 
         Credit: Adam Urbanczyk from cadquery [forum post](https://groups.google.com/g/cadquery/c/5kVRpECcxAU/m/7no7_ja6AAAJ)
 
-        :param hl: The location for the helix if not (x=0, y=0, z=0)
-        :returns: A function which is passes a value between first_t and last_t
-        and returns a 3D point tuple (x, y, z)
+        :param hl: Defines a refinded location when the helix is tapered
+        :returns: A function which is passed "t", an inclusive value between first_t
+                  and last_t and returns a 3D point (x, y, z) on the helix as a
+                  function of t.
         """
         if self.taper_out_rpos > self.taper_in_rpos:
             raise ValueError(
