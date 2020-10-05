@@ -44,6 +44,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/winksaville/py-taperable-helix",
-    version="0.8.6",
+    version="0.8.7",
     zip_safe=False,
 )
