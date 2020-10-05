@@ -2,6 +2,6 @@
 
 __author__ = "Wink Saville"
 __email__ = "wink@saville.com"
-__version__ = "0.8.5"
+__version__ = "0.8.6"
 
 from .helix import Helix, HelixLocation
