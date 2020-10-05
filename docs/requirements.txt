@@ -1,2 +1,4 @@
 Sphinx~=3.2
 sphinx-autodoc-typehints~=1.11
+sphinx-prompt~=1.3
+sphinx_substitution_extensions>=2020.09.30, <2021.12.00

@@ -4,19 +4,11 @@ Welcome to taperable_helix's documentation!
 .. toctree::
    :maxdepth: 2
 
-   readme
+   packagedocs
    installation
    usage
    contributing
    authors
-
-..
-   history
-
-.. toctree::
-   :hidden:
-
-   taperable_helix
 
 Indices and tables
 ==================

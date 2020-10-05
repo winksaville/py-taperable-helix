@@ -5,80 +5,69 @@ Installation
 ============
 
 
-..
-  Stable release
-  --------------
+Stable release
+--------------
 
-  To install taperable-helix, run this command in your terminal:
-  
-  .. code-block:: console
-  
-      $ pip install taperable-helix
-  
-  This is the preferred method to install taperable_helix, as it will always install the most recent stable release.
-  
-  If you don't have `pip`_ installed, this `Python installation guide`_ can guide
-  you through the process.
-  
-  .. _pip: https://pip.pypa.io
-  .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
-  
+To install taperable-helix, run this command in your terminal:
+
+.. prompt:: bash
+
+   pip install taperable-helix
+
+This is the preferred method to install taperable-helix, as it will always install the most recent stable release.
+
+If you don't have `pip`_ installed, this `Python installation guide`_ can guide
+you through the process. Other solutions, which I use, is miniconda_.
+
 Test release from testpypi
 --------------------------
 
 To install taperable-helix from testpypi, run this command in your terminal:
 
-.. code-block:: console
+.. prompt:: bash
 
-   $ pip install --index-url https://test.pypi.org/simple/ taperable-helix
-
-If you don't have `pip`_ installed, this `Python installation guide`_ can guide
-you through the process.
-
-.. _pip: https://pip.pypa.io
-.. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
-
+   pip install --index-url https://test.pypi.org/simple/ taperable-helix
 
 From sources
 ------------
 
 The sources for taperable_helix can be downloaded from the `Github repo`_.
 
-..
   You can either clone the public repository:
 
-.. code-block:: console
+.. prompt:: bash
 
-    $ git clone git://github.com/winksaville/py-taperable-helix taperable-helix
-    $ cd taperable-helix
+   git clone git://github.com/winksaville/py-taperable-helix taperable-helix
+   cd taperable-helix
 
-..
-  Or download the `tarball`_:
+Or download the tarball
   
-  .. code-block:: console
+.. prompt:: bash
+   :substitutions:
   
-      $ curl -OJL https://github.com/winksaville/taperable_helix/tarball/master
+   curl -OJL https://github.com/winksaville/py-taperable-helix/releases/v|ver|.tar.gz
 
 Once you have a copy of the source, you can install it with:
 
-.. code-block:: console
+.. prompt:: bash
 
-    $ python setup.py install
+   python setup.py install
 
 Or if you want to install in editable mode for development:
 
-.. code-block:: console
+.. prompt:: bash
 
-    $ pip install -e . 
+   pip install -e . 
 
 Uninstall
 ---------
 
-.. code-block:: console
+.. prompt:: bash
 
-    $ pip uninstall taperable-helix
+   pip uninstall taperable-helix
 
 
 .. _Github repo: https://github.com/winksaville/taperable_helix
-..
-   .. _tarball: https://github.com/winksaville/taperable_helix/tarball/master
+.. _pip: https://pip.pypa.io
+.. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
+.. _miniconda: https://docs.conda.io/en/latest/miniconda.html
