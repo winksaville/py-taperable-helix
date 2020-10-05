@@ -1,14 +1,6 @@
-taperable\_helix package
-========================
-
-..
- Automodule doesn't work?
-
- .. automodule:: taperable_helix
-     :members:
-     :undoc-members:
-     :show-inheritance:
-
+==================
+Package Docs |ver|
+==================
 
 .. autoclass:: taperable_helix.HelixLocation
         :members:
@@ -21,3 +13,4 @@ taperable\_helix package
         :undoc-members:
         :member-order: bysource
 ..        :show-inheritance:
+
