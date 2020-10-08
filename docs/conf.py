@@ -23,6 +23,10 @@ from typing import Dict
 
 sys.path.insert(0, os.path.abspath(".."))
 
+import logging as pylogging
+
+from sphinx.util import logging
+
 import taperable_helix
 
 # -- Filter issue 123 related to dataclasses ---------------------------
@@ -42,8 +46,6 @@ import taperable_helix
 #            name)
 #        return
 
-import logging as pylogging
-from sphinx.util import logging
 
 # Workaround for https://github.com/agronholm/sphinx-autodoc-typehints/issues/123
 # When this https://github.com/agronholm/sphinx-autodoc-typehints/pull/153
@@ -54,6 +56,7 @@ class FilterForIssue123(pylogging.Filter):
         # that dataclass name is in the message, so that you don't filter out
         # other meaningful warnings
         return not record.getMessage().startswith("Cannot treat a function")
+
 
 # Register the filter
 logging.getLogger("sphinx_autodoc_typehints").logger.addFilter(FilterForIssue123())
@@ -73,7 +76,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx_autodoc_typehints",
     "sphinx-prompt",
-    "sphinx_substitution_extensions"
+    "sphinx_substitution_extensions",
 ]
 
 # Add any paths that contain templates here, relative to this directory.

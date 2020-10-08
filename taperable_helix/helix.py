@@ -6,7 +6,9 @@ from typing import Callable, Optional, Tuple
 @dataclass
 class HelixLocation:
     radius: Optional[float] = None  #: radius of helix if none h.radius
-    horz_offset: float = 0  #: horizontal offset  added to radius then x and y calculated
+    horz_offset: float = (
+        0  #: horizontal offset  added to radius then x and y calculated
+    )
     vert_offset: float = 0  #: vertical added to z of radius
 
 
@@ -31,7 +33,7 @@ class Helix:
     which the threads are "attached" using a "union" operator.
     """
 
-    radius: float #: radius of the basic helix.
+    radius: float  #: radius of the basic helix.
 
     pitch: float
     """pitch of the helix per revolution. I.e the distance between the
@@ -61,10 +63,13 @@ class Helix:
     end at z = height - (2 * inset_offset). Default 0.
     """
 
-    first_t: float = 0  #: first_t is the first t value passed to the returned function. Default 0
+    first_t: float = (
+        0  #: first_t is the first t value passed to the returned function. Default 0
+    )
 
-    last_t: float = 1 #: last_t is the last t value passed to the returned function. Default 1
-
+    last_t: float = (
+        1  #: last_t is the last t value passed to the returned function. Default 1
+    )
 
     def helix(
         self, hl: Optional[HelixLocation] = None
@@ -115,11 +120,13 @@ class Helix:
 
         # Reduce the height by 2 * inset_offset. Threads start at inset_offset
         # and end at height - inset_offset
-        helix_height: float = (self.height - (2 * self.inset_offset))
+        helix_height: float = self.height - (2 * self.inset_offset)
 
         # The number or revolutions of the helix within the helix_height
         # set to 1 if pitch or helix_height is 0
-        turns: float = self.pitch / helix_height if self.pitch != 0 and helix_height != 0 else 1
+        turns: float = (
+            self.pitch / helix_height if self.pitch != 0 and helix_height != 0 else 1
+        )
 
         # With this DISABLED points t_range will be negative
         # when self.last_t < self.first_t. This causes rel_height in "f"
@@ -138,13 +145,17 @@ class Helix:
         t_range: float = self.last_t - self.first_t
 
         taper_out_range: float = t_range * self.taper_out_rpos
-        taper_out_ends: float = self.first_t + taper_out_range if taper_out_range > 0 else min(
-            self.first_t, self.last_t
+        taper_out_ends: float = (
+            self.first_t + taper_out_range
+            if taper_out_range > 0
+            else min(self.first_t, self.last_t)
         )
 
         taper_in_range: float = t_range * (1 - self.taper_in_rpos)
-        taper_in_starts: float = self.last_t - taper_in_range if taper_in_range > 0 else max(
-            self.first_t, self.last_t
+        taper_in_starts: float = (
+            self.last_t - taper_in_range
+            if taper_in_range > 0
+            else max(self.first_t, self.last_t)
         )
 
         # print(f"helix: ft={self.first_t:.4f} lt={self.last_t:.4f} tr={t_range:.4f}")

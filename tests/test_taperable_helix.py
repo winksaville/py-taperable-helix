@@ -157,7 +157,13 @@ def test_helix(view, generate):
     f = h.helix()
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A "helix" with all points equidistant from z-axis by the raidus
@@ -184,7 +190,13 @@ def test_helix_backwards(view, generate):
     f = h.helix()
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # Validate the swapping of first_t and last_t creates the same helix
@@ -215,7 +227,13 @@ def test_helix_torp_0pt1_tirp_0pt9_ho_0pt2(view, generate):
     f = h.helix(HelixLocation(horz_offset=ho))
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A "helix" with a convergence factor of 0.1. The distance from the center line
@@ -246,7 +264,11 @@ def test_helix_trp_validity(view, generate):
     pitch = 1
     height = 1
 
-    h = Helix(radius=radius, pitch=pitch, height=height,)
+    h = Helix(
+        radius=radius,
+        pitch=pitch,
+        height=height,
+    )
 
     h.taper_out_rpos = -0.1
     h.taper_in_rpos = 0.9
@@ -296,7 +318,13 @@ def test_radius_0(view, generate):
     f = h.helix()
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
     # A vertical line starting at 0 ending at 1
     first_pt = (0, 0, 0)
@@ -318,7 +346,13 @@ def test_radius_0_ft_0_lt_0(view, generate):
     f = h.helix()
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A point at origin
@@ -333,7 +367,13 @@ def test_radius_0_ft_neg_1_lt_pos_1(view, generate):
     f = h.helix()
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
     # A vertical line starting at 0 ending at 1
     first_pt = (0, 0, 0)
@@ -355,7 +395,13 @@ def test_radius_0_ft_0_lt_neg_1(view, generate):
     f = h.helix()
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A vertical line starting at 1 ending at 0
@@ -378,7 +424,13 @@ def test_radius_0_ft_neg_2_lt_neg_1(view, generate):
     f = h.helix()
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A vertical line starting at 1 ending at 0
@@ -401,7 +453,13 @@ def test_radius_0_ft_neg_1_lt_neg_2(view, generate):
     f = h.helix()
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A vertical line starting at 0 ending at 1
@@ -424,7 +482,13 @@ def test_radius_0_height_0(view, generate):
     f = h.helix()
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # All points at origin (0, 0, 0)
@@ -438,7 +502,13 @@ def test_radius_0_height_neg_1(view, generate):
     f = h.helix()
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A vertical line starting at 0 ending at -1
@@ -461,7 +531,13 @@ def test_radius_0_ft_pos_0_lt_neg_1_height_neg_1(view, generate):
     f = h.helix()
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A vertical line starting at 0 ending at -1
@@ -481,11 +557,22 @@ def test_radius_0_io_0pt1(view, generate):
     func_name: str = sys._getframe().f_code.co_name
     inc = 0.1
     inset = 0.1
-    h = Helix(radius=0, pitch=1, height=1, inset_offset=inset,)
+    h = Helix(
+        radius=0,
+        pitch=1,
+        height=1,
+        inset_offset=inset,
+    )
     f = h.helix()
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A vertical line starting at 0.1 ending at 0.9
@@ -513,7 +600,13 @@ def test_radius_0_ft_0_lt_0_io_neg_0pt1(view, generate):
     f = h.helix()
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, first_t, last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        first_t,
+        last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A point at origin (0, 0, inset)
@@ -530,7 +623,13 @@ def test_pitch_0_height_0(view, generate):
     f = h.helix()
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A "circle" centered around the origin
@@ -557,7 +656,13 @@ def test_pitch_0_height_1(view, generate):
     f = h.helix()
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A "circle" centered around the height
@@ -582,7 +687,13 @@ def test_pitch_0_ho_1(view, generate):
     f = h.helix(HelixLocation(horz_offset=ho))
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A "circle" centered at 0 with a radius = radius + ho
@@ -610,7 +721,13 @@ def test_pitch_0_vo_1(view, generate):
     f = h.helix(HelixLocation(vert_offset=vo))
     points = generate_points(f, h.first_t, h.last_t, inc)
     doit(
-        func_name, points, h.first_t, h.last_t, inc, viewable=view, generate=generate,
+        func_name,
+        points,
+        h.first_t,
+        h.last_t,
+        inc,
+        viewable=view,
+        generate=generate,
     )
 
     # A "circle" centered around the horz_offset

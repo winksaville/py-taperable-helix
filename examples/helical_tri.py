@@ -61,7 +61,10 @@ if __name__ == "__main__":
         action="store_true",
     )
     parser.add_argument(
-        "-w", "--write", help="Write image and html files", action="store_true",
+        "-w",
+        "--write",
+        help="Write image and html files",
+        action="store_true",
     )
     args = parser.parse_args()
 
