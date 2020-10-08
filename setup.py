@@ -23,6 +23,7 @@ setup(
     author="Wink Saville",
     author_email="wink@saville.com",
     python_requires=">=3.7",
+    platforms=["any"],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",
