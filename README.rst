@@ -98,7 +98,7 @@ Using
 Development and Examples
 ########################
 
-See `dev-requirements.txt`_ for most up to date list:
+See `dev-requirements.in`_ for most up to date list:
 
 * pip-tools
 * bump2version
@@ -131,4 +131,4 @@ package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_
 .. _`helix.py`: https://github.com/winksaville/py-taperable-helix/blob/master/taperable_helix/helix.py
 .. _`helical_line.py`: https://github.com/winksaville/py-taperable-helix/blob/master/examples/helical_line.py
 .. _`helical_tri.py`: https://github.com/winksaville/py-taperable-helix/blob/master/examples/helical_tri.py
-.. _`dev-requirements.txt`: https://github.com/winksaville/py-taperable-helix/blob/master/taperable_helix/helix.py
+.. _`dev-requirements.in`: https://github.com/winksaville/py-taperable-helix/blob/master/dev-requirements.in
