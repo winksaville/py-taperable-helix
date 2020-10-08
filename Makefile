@@ -158,16 +158,18 @@ install-test: clean ## Install from test.pypi.org
 
 .PHONY: install-dev
 install-dev: ## Install from the sources for developemeent
+	#pip install -e .
 	pip install -e . -r dev-requirements.txt
 
 
 # Update dependencies, used by update
+# Note: You can not use --generate-hashes parameter with editable installs
 .PHONY: update-deps
 update-deps:
 	# No requirements in setup.py so skip
-	# pip-compile --upgrade --generate-hashes --allow-unsafe --output-file requirments.txt
+	# pip-compile --upgrade --allow-unsafe --output-file requirments.txt
 	# pip install --upgrade -r requirements.txt
-	pip-compile --upgrade --generate-hashes --allow-unsafe --output-file dev-requirements.txt dev-requirements.in
+	pip-compile --upgrade --allow-unsafe --output-file dev-requirements.txt dev-requirements.in
 	pip install --upgrade -r dev-requirements.txt
 
 # Besure pip-tools is installed, used by update

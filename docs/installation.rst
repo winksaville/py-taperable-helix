@@ -17,7 +17,7 @@ To install taperable-helix, run this command in your terminal:
 This is the preferred method to install taperable-helix, as it will always install the most recent stable release.
 
 If you don't have `pip`_ installed, this `Python installation guide`_ can guide
-you through the process. Other solutions, which I use, is miniconda_.
+you through the process.
 
 Test release from testpypi
 --------------------------
@@ -57,7 +57,11 @@ Or if you want to install in editable mode for development:
 
 .. prompt:: bash
 
-   pip install -e . 
+   make install-dev
+
+.. prompt:: bash
+
+   pip install -e . -r dev-requirements.txt
 
 Uninstall
 ---------
@@ -70,4 +74,3 @@ Uninstall
 .. _Github repo: https://github.com/winksaville/taperable_helix
 .. _pip: https://pip.pypa.io
 .. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
-.. _miniconda: https://docs.conda.io/en/latest/miniconda.html
