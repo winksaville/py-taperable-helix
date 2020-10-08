@@ -28,8 +28,12 @@ format_srcs=setup.py taperable_helix/ tests/ examples/ docs/
 help: ## help
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
+
 .PHONY: clean
-clean: clean-build clean-pyc clean-test clean-docs ## remove all build, test, coverage and Python artifacts
+clean: clean-no-docs clean-docs ## remove all build, test, coverage and Python artifacts
+
+.PHONY: clean-no-docs
+clean-no-docs: clean-build clean-pyc clean-test ## remove all EXCEPT docs
 
 .PHONY: clean-build
 clean-build: ## remove build artifacts
@@ -145,9 +149,30 @@ dist: clean docs ## builds source and wheel package
 	ls -l dist
 
 .PHONY: install
-install: clean ## install from the sources to the active Python's site-packages
-	python setup.py install
+install: clean ## install pypi.org (Add requirments.txt if needed
+	pip install
 
-.PHONY: dev
-dev: clean ## install from the sources for developemeent
-	pip install -e .
+.PHONY: dev-install
+dev-install: ## install from the sources for developemeent
+	pip install -e . -r dev-requirements.txt
+
+
+# Update dependencies, used by update
+.PHONY: update-deps
+update-deps:
+	# No requirements in setup.py so skip
+	# pip-compile --upgrade --generate-hashes --allow-unsafe --output-file requirments.txt
+	# pip install --upgrade -r requirements.txt
+	pip-compile --upgrade --generate-hashes --allow-unsafe --output-file dev-requirements.txt dev-requirements.in
+	pip install --upgrade -r dev-requirements.txt
+
+# Besure pip-tools is installed, used by update
+.PHONY: update-init
+update-init:
+	pip install pip-tools
+
+# Invoke update when you want to update the dev-requirments.
+# See: https://stackoverflow.com/a/33685899
+#
+.PHONY: update-dev
+update-dev: clean-no-docs update-init update-deps dev-install ## Update dev-requirements
