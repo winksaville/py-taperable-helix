@@ -149,11 +149,15 @@ dist: clean docs ## builds source and wheel package
 	ls -l dist
 
 .PHONY: install
-install: clean ## install pypi.org (Add requirments.txt if needed
-	pip install
+install: clean ## Install from pypi.org
+	pip install taperable-helix
 
-.PHONY: dev-install
-dev-install: ## install from the sources for developemeent
+.PHONY: install-test
+install-test: clean ## Install from test.pypi.org
+	pip install taperable-helix
+
+.PHONY: install-dev
+install-dev: ## Install from the sources for developemeent
 	pip install -e . -r dev-requirements.txt
 
 
@@ -175,4 +179,4 @@ update-init:
 # See: https://stackoverflow.com/a/33685899
 #
 .PHONY: update-dev
-update-dev: clean-no-docs update-init update-deps dev-install ## Update dev-requirements
+update-dev: clean-no-docs update-init update-deps install-dev ## Update dev-requirements
