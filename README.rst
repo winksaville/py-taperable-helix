@@ -21,13 +21,8 @@ Generate helixes that can optionally taper to a point at each end.
 * PyPi package: https://pypi.org/project/taperable-helix/
 * Test PyPi package: https://test.pypi.org/project/taperable-helix/
 * Free software: MIT license
+* Source: `helix.py`_
 
-
-Package Docs
-------------
-
-* docs: https://taperable-helix.readthedocs.io/en/latest/taperable_helix.html
-* source: `helix.py`_
 
 Examples
 --------
@@ -103,12 +98,24 @@ Using
 Development and Examples
 ########################
 
-* sphinx
-* plotly
+See `dev-requirements.txt`_ for most up to date list:
 
-  * numpy
-  * panda
-  * python-kaleido
+* pip-tools
+* bump2version
+* wheel
+* isort
+* black
+* flake8
+* tox
+* tox-conda
+* coverage
+* Sphinx~=3.2
+* sphinx-autodoc-typehints~=1.11
+* sphinx-prompt~=1.3
+* sphinx_substitution_extensions>=2020.09.30, <2021.12.00
+* twine
+* pytest
+* pytest-runner
 
 Credits
 -------
@@ -124,3 +131,4 @@ package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_
 .. _`helix.py`: https://github.com/winksaville/py-taperable-helix/blob/master/taperable_helix/helix.py
 .. _`helical_line.py`: https://github.com/winksaville/py-taperable-helix/blob/master/examples/helical_line.py
 .. _`helical_tri.py`: https://github.com/winksaville/py-taperable-helix/blob/master/examples/helical_tri.py
+.. _`dev-requirements.txt`: https://github.com/winksaville/py-taperable-helix/blob/master/taperable_helix/helix.py
