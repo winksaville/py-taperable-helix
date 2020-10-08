@@ -169,7 +169,9 @@ class Helix:
             """
 
             # This if statement is needed to satisfy mypy this is already
-            # guaranteed in helix() above.
+            # guaranteed in helix() above so the if statement is always
+            # False. Furthermore this means the raise line is untestable.
+            # Hopefully this can be fixed in the future.
             if (hl is None) or (hl.radius is None):
                 raise ValueError("hl or hl.radius is None, should never happen")
 
