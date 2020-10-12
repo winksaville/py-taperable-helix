@@ -127,7 +127,7 @@ release-testpypi: dist ## package and upload a release
 	twine upload --repository testpypi dist/*
 
 .PHONY: push-with-tags
-push-tags: ## Push origin master with tags with zipped srcs on github
+push-with-tags: ## Push origin master with tags with zipped srcs on github
 	git push origin master --tags
 
 .PHONY: bumpver-patch
