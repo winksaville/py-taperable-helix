@@ -5,11 +5,14 @@ from typing import Callable, Optional, Tuple
 
 @dataclass
 class HelixLocation:
-    radius: Optional[float] = None  #: radius of helix if none h.radius
-    horz_offset: float = (
-        0  #: horizontal offset  added to radius then x and y calculated
-    )
-    vert_offset: float = 0  #: vertical added to z of radius
+    radius: Optional[float] = None
+    """radius of helix if none h.radius"""
+
+    horz_offset: float = 0
+    """horizontal offset  added to radius then x and y calculated"""
+
+    vert_offset: float = 0
+    """vertical added to z of radius"""
 
 
 @dataclass
@@ -33,14 +36,16 @@ class Helix:
     which the threads are "attached" using a "union" operator.
     """
 
-    radius: float  #: radius of the basic helix.
+    radius: float
+    """radius of the basic helix."""
 
     pitch: float
     """pitch of the helix per revolution. I.e the distance between the
     height of a single "turn" of the helix.
     """
 
-    height: float  #: height of the cyclinder containing the helix.
+    height: float
+    """height of the cyclinder containing the helix."""
 
     taper_out_rpos: float = 0
     """taper_out_rpos is a decimal number with an inclusive range of 0..1
@@ -63,13 +68,11 @@ class Helix:
     end at z = height - (2 * inset_offset). Default 0.
     """
 
-    first_t: float = (
-        0  #: first_t is the first t value passed to the returned function. Default 0
-    )
+    first_t: float = 0
+    """first_t is the first t value passed to the returned function. Default 0"""
 
-    last_t: float = (
-        1  #: last_t is the last t value passed to the returned function. Default 1
-    )
+    last_t: float = 1
+    """last_t is the last t value passed to the returned function. Default 1"""
 
     def helix(
         self, hl: Optional[HelixLocation] = None

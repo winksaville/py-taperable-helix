@@ -66,14 +66,16 @@ Ready to contribute? Here's how to set up `taperable-helix`_ for local developme
 
     git clone git@github.com:your_name_here/taperable_helix.git
 
-3. Instantiate an (virtual) enviorment which supports python3.7, python3.8,
-   isort, black, flake8 and bump2version:
+3. Instantiate an (virtual) enviorment which supports python3.7,
+   isort, black, flake8 and bump2version. Using `make install-dev` will
+   install appropriate development dependencies:
 
 .. prompt:: bash
 
     <instantiate your virtual environment if necessary>
     cd taperable_helix/
-    python install -e .
+    make install-dev
+
 
 4. Create a branch for local development:
 
@@ -115,25 +117,37 @@ Before you submit a pull request, check that it meets these guidelines:
 Tips
 ----
 
-To run a subset of tests:
+To run a particular test execute `pytest` with the test file to run followed
+by a `::xxx` where `xxx` is the test name. See `pytest usage`_ for more info:
 
 .. prompt:: bash
 
-    pytest tests.test_taperable_helix
-
+    pytest tests/test_taperable_helix.py::test_helix_torp_0pt1_tirp_0pt9_ho_0pt2
 
 Deploying
 ---------
 
 A reminder for the maintainers on how to deploy.
 Make sure all your changes are committed.
-Then run:
+Then run and validate that `test.pypi.org`_
+is good:
 
 .. prompt:: bash
 
     bump2version patch # possible: major / minor / patch
     git push
-    git push --tags
+    make release-testpypi
+
+
+Finally, assuming `test.pypi.org`_ is good, push to pypi.org_:
+
+.. prompt:: bash
+
+    make release
+
 
 .. _taperable-helix: https://github.com/winksaville/py-taperable-helix.git
 .. _taperable-helix issues: https://github.com/winksaville/py-taperable-helix/issues
+.. _test.pypi.org: https://test.pypi.org/project/taperable-helix/
+.. _pypi.org: https://test.pypi.org/project/taperable-helix/
+.. _pytest usage: https://docs.pytest.org/en/stable/usage.html
