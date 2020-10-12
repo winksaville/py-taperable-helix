@@ -127,8 +127,8 @@ release-testpypi: dist ## package and upload a release
 	twine upload --repository testpypi dist/*
 
 .PHONY: push-tags
-push-tags: ## Push tags to github which creates "Releases & Tags" and zipped srcs
-	git push --tags
+push-tags: ## Push current branch and tags to github which creates "Releases & Tags" and zipped srcs
+	git push . --tags
 
 .PHONY: bumpver-patch
 bumpver-patch: ## Bump patch field of current_version

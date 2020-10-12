@@ -134,8 +134,8 @@ is good:
 
 .. prompt:: bash
 
-    bump2version patch # possible: major / minor / patch
-    git push
+    bump2version patch # param maybe: major | minor | patch
+    make push-tags
     make release-testpypi
 
 
