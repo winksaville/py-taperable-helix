@@ -17,5 +17,6 @@ pytest
 pytest-runner
 kaleido
 plotly
+psutil
 numpy
 pandas
