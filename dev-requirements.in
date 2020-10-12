@@ -15,6 +15,7 @@ sphinx_substitution_extensions>=2020.09.30, <2021.12.00
 twine
 pytest
 pytest-runner
+kaleido
 plotly
 numpy
 pandas

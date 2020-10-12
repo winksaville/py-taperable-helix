@@ -115,12 +115,8 @@ if __name__ == "__main__":
 
     if args.write:
         try:
-            # fname = "data/helical_tri.html"
-            # fig.write_html(fname)
-            # print(f"wrote: {fname}")
-
             fname = "data/helical_tri.webp"
             fig.write_image(fname)
             print(f"wrote: {fname}")
-        except Exception:
-            print("Unable to write files; run from project root")
+        except Exception as e:
+            print(f"Unable to write files; maybe run from project root: e={e}")
