@@ -9,6 +9,8 @@ webbrowser.open("file://" + pathname2url(os.path.abspath(sys.argv[1])))
 endef
 export BROWSER_PYSCRIPT
 
+BROWSER := python -c "$$BROWSER_PYSCRIPT"
+
 define PRINT_HELP_PYSCRIPT
 import re, sys
 
@@ -19,8 +21,6 @@ for line in sys.stdin:
 		print("%-20s %s" % (target, help))
 endef
 export PRINT_HELP_PYSCRIPT
-
-BROWSER := python -c "$$BROWSER_PYSCRIPT"
 
 format_srcs=setup.py taperable_helix/ tests/ examples/ docs/
 
@@ -99,8 +99,9 @@ coverage: ## check code coverage quickly with the default Python
 	# coverage html
 	# $(BROWSER) htmlcov/index.html
 
+# Currently this isn't used
 .PHONY: apidocs
-apidocs: ## Use sphinx-apidoc to rebuild the autodoc files
+apidocs:
 	rm -f docs/taperable_helix.rst
 	rm -f docs/modules.rst
 	sphinx-apidoc -o docs/ taperable_helix
